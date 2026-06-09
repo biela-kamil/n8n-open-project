@@ -3,7 +3,8 @@ import { openProjectRequest } from "../../utils/request";
 import type { OpenProjectCollection, OpenProjectElement } from "../../utils/types";
 import { buildProjectFilters, type ProjectFilterInput } from "../../utils/filters";
 
-export async function getAll(
+
+export async function getProjects(
 	this: IExecuteFunctions,
 	itemIndex: number,
 ): Promise<INodeExecutionData[]> {

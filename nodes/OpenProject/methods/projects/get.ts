@@ -4,9 +4,9 @@ import type {
 	INodeListSearchItems,
 	INodeListSearchResult,
 } from "n8n-workflow";
-import { openProjectRequest } from "../utils/request";
-import type { OpenProjectCollection } from "../utils/types";
-import { buildProjectFilters } from "../utils/filters";
+import { openProjectRequest } from "../../utils/request";
+import type { OpenProjectCollection } from "../../utils/types";
+import { buildProjectFilters } from "../../utils/filters";
 
 export async function getProjects(
 	this: ILoadOptionsFunctions,

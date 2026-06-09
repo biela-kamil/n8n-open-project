@@ -8,13 +8,14 @@ import type {
 export class OpenProjectApi implements ICredentialType {
 	name = 'openProjectApi';
 	displayName = 'Open Project API';
+	documentationUrl = 'openProject';
 
 	properties: INodeProperties[] = [
 		{
 			displayName: 'URL',
 			name: 'url',
 			type: 'string',
-			placeholder: 'https://backlog.centrumosk.pl',
+			placeholder: 'https://www.openproject.org',
 			default: '',
 			description: 'Base URL of your OpenProject instance, without a trailing slash',
 		},

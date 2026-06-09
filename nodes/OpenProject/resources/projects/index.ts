@@ -42,6 +42,7 @@ export const projectsDescription: INodeProperties[] = [
 			show: { ...showOnlyForProjectsGetAll, returnAll: [false] },
 		},
 		typeOptions: { minValue: 1 },
+
 		default: 50,
 		description: 'Max number of results to return',
 	},
