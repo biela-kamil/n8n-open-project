@@ -3,7 +3,7 @@
 # MODEL: the tag is the single source of truth for the version. You create a
 # tag named after the version (e.g. 0.2.0), push it, and this workflow writes
 # that version into package.json, builds, publishes to npm with provenance,
-# and commits the version bump back to main.
+# and commits the version bump back to master.
 #
 # Starting May 1 2026, n8n requires all community nodes to be published via
 # GitHub Actions with npm provenance statements. This workflow satisfies that
@@ -16,7 +16,7 @@
 #   git push origin 0.2.0
 #
 # That's it. The workflow does the rest (bump package.json, build, publish,
-# commit the bump back to main).
+# commit the bump back to master).
 #
 # ─── PREREQUISITES ─────────────────────────────────────────────────────────────
 #
@@ -44,9 +44,9 @@
 #
 # ─── BRANCH PROTECTION NOTE ────────────────────────────────────────────────────
 #
-# The final step pushes a "chore: release" commit to main. If main has branch
-# protection that blocks direct pushes, either allow github-actions[bot] to
-# bypass it, or remove the commit-back step.
+# The final step pushes a "chore: release" commit to master. If master has
+# branch protection that blocks direct pushes, either allow github-actions[bot]
+# to bypass it, or remove the commit-back step.
 #
 # ─── TAG CONVENTION ────────────────────────────────────────────────────────────
 #
@@ -61,7 +61,7 @@ on:
     tags:
       - '*.*.*'
 
-# Avoid concurrent releases stepping on each other when pushing back to main.
+# Avoid concurrent releases stepping on each other when pushing back to master.
 concurrency:
   group: publish
   cancel-in-progress: false
@@ -74,14 +74,14 @@ jobs:
     permissions:
       # Required to mint an OIDC token for npm provenance attestation.
       id-token: write
-      # Required to push the version-bump commit back to main.
+      # Required to push the version-bump commit back to master.
       contents: write
 
     steps:
-      # Check out main (not the detached tag) so we can commit the bump back.
+      # Check out master (not the detached tag) so we can commit the bump back.
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: master
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -107,7 +107,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Commit version bump back to main
+      - name: Commit version bump back to master
         run: |
           if git diff --quiet -- package.json package-lock.json; then
             echo "No version change to commit."
@@ -116,4 +116,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: release $GITHUB_REF_NAME" -- package.json package-lock.json
-          git push origin HEAD:main
+          git push origin HEAD:master
