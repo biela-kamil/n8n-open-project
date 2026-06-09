@@ -192,6 +192,34 @@ export const tasksDescription: INodeProperties[] = [
 		],
 	},
 	{
+		displayName: 'Priority',
+		name: 'priority',
+		type: 'resourceLocator',
+		default: { mode: 'list', value: '' },
+		displayOptions: {
+			show: { ...showOnlyResource, operation: ['update', 'create'] },
+		},
+		modes: [
+			{
+				displayName: 'From List',
+				name: 'list',
+				type: 'list',
+				placeholder: 'Select a priority...',
+				typeOptions: {
+					searchListMethod: 'searchPriorities',
+					searchable: true,
+					searchFilterRequired: false,
+				},
+			},
+			{
+				displayName: 'By ID',
+				name: 'id',
+				type: 'string',
+				placeholder: 'e.g. 7',
+			},
+		],
+	},
+	{
 		displayName: 'Filters',
 		name: 'filters',
 		type: 'collection',

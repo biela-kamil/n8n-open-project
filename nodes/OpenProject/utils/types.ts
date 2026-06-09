@@ -38,6 +38,12 @@ export type OpenProjectType = {
 	position: number;
 };
 
+export type OpenProjectPriority = {
+	id: string;
+	name: string;
+	position: number;
+};
+
 export type OpenProjectUser = {
 	id: string;
 	name: string;

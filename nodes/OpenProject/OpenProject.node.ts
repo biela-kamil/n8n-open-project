@@ -17,6 +17,8 @@ import { getStatuses, searchStatuses } from './methods/statuses/get';
 import { getUsers } from './methods/users/get';
 import { usersDescription } from './resources/users';
 import { operations } from './operations';
+import { prioritiesDescription } from './resources/priorities';
+import { searchPriorities } from './methods/priorities/get';
 
 export class OpenProject implements INodeType {
 	description: INodeTypeDescription = {
@@ -48,6 +50,7 @@ export class OpenProject implements INodeType {
 				type: 'options',
 				noDataExpression: true,
 				options: [
+					{ name: 'Priority', value: 'priority' },
 					{ name: 'Project', value: 'project' },
 					{ name: 'Task', value: 'task' },
 					{ name: 'Type', value: 'type' },
@@ -59,6 +62,7 @@ export class OpenProject implements INodeType {
 			...tasksDescription,
 			...typesDescription,
 			...usersDescription,
+			...prioritiesDescription,
 		],
 		usableAsTool: true,
 	};
@@ -69,6 +73,7 @@ export class OpenProject implements INodeType {
 			getTypes: methodGetTypes,
 			getUsers,
 			searchStatuses,
+			searchPriorities,
 		},
 		loadOptions: {
 			getStatuses,

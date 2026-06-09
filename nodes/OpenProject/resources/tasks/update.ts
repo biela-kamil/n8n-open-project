@@ -11,6 +11,9 @@ export async function updateTask(
 	const status = this.getNodeParameter('updateStatus', itemIndex, '', {
 		extractValue: true,
 	}) as string;
+	const priority = this.getNodeParameter('priority', itemIndex, undefined, {
+		extractValue: true,
+	}) as string;
 
 	const current = await openProjectRequest.call(this, 'GET', `/work_packages/${id}`, {}, {});
 	const lockVersion = current.lockVersion;
@@ -31,6 +34,12 @@ export async function updateTask(
 	if (status !== '') {
 		body._links = {
 			status: { href: `/api/v3/statuses/${status}` },
+		};
+	}
+
+	if (priority !== '') {
+		body._links = {
+			priority: { href: `/api/v3/priorities/${priority}` },
 		};
 	}
 

@@ -9,7 +9,12 @@ export async function createTask(
 	const type = this.getNodeParameter('type', itemIndex, undefined, {
 		extractValue: true,
 	}) as string;
+
 	const project = this.getNodeParameter('project', itemIndex, undefined, {
+		extractValue: true,
+	}) as string;
+
+	const priority = this.getNodeParameter('priority', itemIndex, undefined, {
 		extractValue: true,
 	}) as string;
 
@@ -25,6 +30,7 @@ export async function createTask(
 			_links: {
 				project: { href: `/api/v3/projects/${project}` },
 				type: { href: `/api/v3/types/${type}` },
+				priority: { href: `/api/v3/priorities/${priority}` },
 			},
 			description: {
 				format: 'markdown',
