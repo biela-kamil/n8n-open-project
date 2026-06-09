@@ -28,11 +28,14 @@ git push origin 0.2.0
 2. `actions/setup-node@v4` (`lts/*`, cache npm) + `npm ci`.
 3. Ustawienie wersji z taga:
    `npm version "$GITHUB_REF_NAME" --no-git-tag-version --allow-same-version`.
-4. Publikacja: `npm publish --provenance --access public`.
-   Build + lint odpalają się automatycznie przez istniejący hook
-   `prepublishOnly` (`n8n-node prerelease`).
+4. Publikacja: `npm run release`. `n8n-node release` wykrywa GitHub Actions
+   i robi lint + build + `npm publish` z provenance (`NPM_CONFIG_PROVENANCE=true`)
+   oraz `RELEASE_MODE=true`. RELEASE_MODE jest wymagane — hook `prepublishOnly`
+   (`n8n-node prerelease`) celowo blokuje gołe `npm publish` i przepuszcza je
+   tylko gdy RELEASE_MODE jest ustawione. W CI `release` NIE robi commit/tag/push.
+   Dostęp `public` bierze się z `publishConfig` w package.json.
 5. Po udanej publikacji: commit `chore: release <wersja>` (`package.json`
-   + `package-lock.json`) i `git push origin main`.
+   + `package-lock.json`) i `git push origin master`.
 
 ## Uprawnienia joba
 
@@ -46,8 +49,10 @@ git push origin 0.2.0
   (publikowana wersja == tag).
 - **Branch protection na main** zablokuje krok 5 (push). Wymaga wyjątku
   dla github-actions[bot] albo rezygnacji z commit-backu.
-- **release-it** nie jest już używany w CI; zależność zostaje dla
-  ewentualnego użycia lokalnego (usunięcie poza zakresem).
+- **Publikacja idzie przez `npm run release`** (sankcjonowana ścieżka
+  n8n-node), nie przez gołe `npm publish` — to ostatnie jest blokowane
+  przez hook `prepublishOnly`. `release-it` jest używany przez
+  `n8n-node release` tylko lokalnie (w CI ścieżka go pomija).
 
 ## Setup jednorazowy
 

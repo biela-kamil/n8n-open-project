@@ -20,9 +20,9 @@
 #
 # ─── PREREQUISITES ─────────────────────────────────────────────────────────────
 #
-# @n8n/node-cli ≥ 0.23.0 is required (build/lint run via the prepublishOnly
-# hook). Check with `npm list @n8n/node-cli`; upgrade with
-# `npm install --save-dev @n8n/node-cli@latest`.
+# @n8n/node-cli ≥ 0.23.0 is required (its `release` command runs lint + build
+# and publishes with provenance in CI). Check with `npm list @n8n/node-cli`;
+# upgrade with `npm install --save-dev @n8n/node-cli@latest`.
 #
 # ─── ONE-TIME SETUP (npm auth) ─────────────────────────────────────────────────
 #
@@ -99,11 +99,16 @@ jobs:
         run: npm version "$GITHUB_REF_NAME" --no-git-tag-version --allow-same-version
 
       - name: Publish to npm
-        # Build and lint run automatically via the prepublishOnly hook.
-        # --provenance requires the id-token: write permission above.
+        # `npm run release` (n8n-node release) auto-detects GitHub Actions and
+        # runs lint + build, then `npm publish` with provenance enabled
+        # (NPM_CONFIG_PROVENANCE=true) and RELEASE_MODE=true. RELEASE_MODE is
+        # required: the package's prepublishOnly hook (n8n-node prerelease)
+        # deliberately blocks a bare `npm publish` and only allows it when
+        # RELEASE_MODE is set. In CI this command does NOT commit/tag/push.
+        # Publish access (public) comes from publishConfig in package.json.
         # Option A (OIDC): leave NPM_TOKEN unset — npm uses the OIDC exchange.
         # Option B (token): set NPM_TOKEN — setup-node writes it to .npmrc.
-        run: npm publish --provenance --access public
+        run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
