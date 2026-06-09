@@ -6,21 +6,31 @@ export async function updateTask(
 	itemIndex: number,
 ): Promise<INodeExecutionData[]> {
 	const id = this.getNodeParameter('id', itemIndex) as string;
-	const updateFields = this.getNodeParameter('updateFields', itemIndex, {});
+	const subject = this.getNodeParameter('updateSubject', itemIndex, '') as string;
+	const description = this.getNodeParameter('updateDescription', itemIndex, '') as string;
+	const status = this.getNodeParameter('updateStatus', itemIndex, '', {
+		extractValue: true,
+	}) as string;
 
 	const current = await openProjectRequest.call(this, 'GET', `/work_packages/${id}`, {}, {});
 	const lockVersion = current.lockVersion;
 
 	const body: IDataObject = { lockVersion };
 
-	if ('subject' in updateFields) {
-		body.subject = updateFields.subject;
+	if (subject !== '') {
+		body.subject = subject;
 	}
 
-	if ('taskDescription' in updateFields) {
+	if (description !== '') {
 		body.description = {
 			format: 'markdown',
-			raw: updateFields.taskDescription,
+			raw: description,
+		};
+	}
+
+	if (status !== '') {
+		body._links = {
+			status: { href: `/api/v3/statuses/${status}` },
 		};
 	}
 

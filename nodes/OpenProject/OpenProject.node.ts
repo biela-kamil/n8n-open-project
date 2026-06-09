@@ -13,7 +13,7 @@ import { tasksDescription } from './resources/tasks';
 
 import { typesDescription } from './resources/types';
 import { getTypes as methodGetTypes } from './methods/types/get';
-import { getStatuses } from './methods/statuses/get';
+import { getStatuses, searchStatuses } from './methods/statuses/get';
 import { getUsers } from './methods/users/get';
 import { usersDescription } from './resources/users';
 import { operations } from './operations';
@@ -68,6 +68,7 @@ export class OpenProject implements INodeType {
 			getProjects,
 			getTypes: methodGetTypes,
 			getUsers,
+			searchStatuses,
 		},
 		loadOptions: {
 			getStatuses,
