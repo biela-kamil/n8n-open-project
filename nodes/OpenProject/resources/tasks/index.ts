@@ -11,20 +11,25 @@ export const tasksDescription: INodeProperties[] = [
 		noDataExpression: true,
 		options: [
 			{
+				name: 'Create Task',
+				value: 'create',
+				action: 'Create task',
+			},
+			{
 				name: 'Get Many',
 				value: 'getAll',
 				action: 'Get many tasks',
 				description: 'Get many tasks',
 			},
 			{
-				name: 'Create Task',
-				value: 'create',
-				action: 'Create task',
-			},
-			{
 				name: 'Get Task',
 				value: 'getOne',
 				action: 'Get task',
+			},
+			{
+				name: 'Returns the Possible Statuses for the Task',
+				value: 'statuses',
+				action: 'Returns the possible statuses for the task',
 			},
 			{
 				name: 'Update Task',
@@ -88,7 +93,7 @@ export const tasksDescription: INodeProperties[] = [
 		displayName: 'ID',
 		name: 'id',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['getOne', 'update'] },
+			show: { ...showOnlyResource, operation: ['getOne', 'update', 'statuses'] },
 		},
 		type: 'string',
 		default: '',

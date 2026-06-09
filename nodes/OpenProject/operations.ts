@@ -7,6 +7,7 @@ import { getTypes } from './resources/types/getAll';
 import { getProjects as resourceGetProjects } from './resources/projects/getAll';
 import { createTask } from './resources/tasks/create';
 import { getUsers } from './resources/users/getAll';
+import { getStatusesByTaskId } from './resources/tasks/statuses';
 
 type OperationFn = (this: IExecuteFunctions, itemIndex: number) => Promise<INodeExecutionData[]>;
 
@@ -18,4 +19,5 @@ export const operations: Record<string, OperationFn> = {
 	'task.update': updateTask,
 	'type.getAll': getTypes,
 	'user.getAll': getUsers,
+	'task.statuses': getStatusesByTaskId,
 };

@@ -27,6 +27,7 @@ export async function openProjectRequest(
 
 	if (body !== undefined) {
 		options.body = body;
+		options.headers = { ...options.headers, 'Content-Type': 'application/json' };
 	}
 
 	return this.helpers.httpRequestWithAuthentication.call(this, 'openProjectApi', options);
