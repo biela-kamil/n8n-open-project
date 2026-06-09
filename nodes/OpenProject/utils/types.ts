@@ -11,7 +11,7 @@ export type OpenProjectCollection = {
 	count: number;
 	pageSize: number;
 	offset: number;
-	_embedded: {
-		elements: OpenProjectElement[];
+	_embedded?: {
+		elements?: OpenProjectElement[];
 	};
 };

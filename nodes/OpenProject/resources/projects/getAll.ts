@@ -1,24 +1,7 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from "n8n-workflow";
 import { openProjectRequest } from "../../utils/request";
 import type { OpenProjectCollection, OpenProjectElement } from "../../utils/types";
-
-function buildFilters(filters: IDataObject): string | undefined {
-	const filterArray: IDataObject[] = [];
-
-	if (filters.active && filters.active !== 'any') {
-		filterArray.push({
-			active: { operator: '=', values: [filters.active === 'active' ? 't' : 'f'] },
-		});
-	}
-
-	if (filters.nameAndIdentifier) {
-		filterArray.push({
-			name_and_identifier: { operator: '~', values: [filters.nameAndIdentifier as string] },
-		});
-	}
-
-	return filterArray.length > 0 ? JSON.stringify(filterArray) : undefined;
-}
+import { buildProjectFilters, type ProjectFilterInput } from "../../utils/filters";
 
 export async function getAll(
 	this: IExecuteFunctions,
@@ -29,8 +12,8 @@ export async function getAll(
 		? Number.POSITIVE_INFINITY
 		: (this.getNodeParameter('limit', itemIndex, 50) as number);
 
-	const filters = buildFilters(this.getNodeParameter('filters', itemIndex, {}) as IDataObject);
-	const pageSize = 100;
+	const filters = buildProjectFilters(this.getNodeParameter('filters', itemIndex, {}) as ProjectFilterInput);
+	const pageSize = returnAll ? 100 : Math.min(100, limit);
 	let offset = 1;
 
 	const collected: OpenProjectElement[] = [];

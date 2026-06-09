@@ -6,6 +6,7 @@ import type {
 } from "n8n-workflow";
 import { openProjectRequest } from "../utils/request";
 import type { OpenProjectCollection } from "../utils/types";
+import { buildProjectFilters } from "../utils/filters";
 
 export async function getProjects(
 	this: ILoadOptionsFunctions,
@@ -16,10 +17,9 @@ export async function getProjects(
 	const pageSize = 100;
 
 	const qs: IDataObject = { offset: page, pageSize };
-	if (filter) {
-		qs.filters = JSON.stringify([
-			{ name_and_identifier: { operator: '~', values: [filter] } },
-		]);
+	const filters = buildProjectFilters({ nameAndIdentifier: filter });
+	if (filters) {
+		qs.filters = filters;
 	}
 
 	const response = (await openProjectRequest.call(
