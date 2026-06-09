@@ -1,23 +1,47 @@
-import type {ICredentialType, INodeProperties} from "n8n-workflow";
+import type {
+	IAuthenticateGeneric,
+	ICredentialTestRequest,
+	ICredentialType,
+	INodeProperties,
+} from "n8n-workflow";
 
 export class OpenProjectApi implements ICredentialType {
-    name = 'openProjectApi';
-    displayName =  'Open Project API';
+	name = 'openProjectApi';
+	displayName = 'Open Project API';
 
-    properties: INodeProperties[] = [
-        {
-            displayName: 'Access Token',
-            name: 'accessToken',
-            type: 'string',
-            typeOptions: { password: true},
-            default: ''
-        },
-        {
-            displayName: 'Url',
-            name: 'url',
-            type: 'string',
-            default: ''
-        }
-    ]
+	properties: INodeProperties[] = [
+		{
+			displayName: 'URL',
+			name: 'url',
+			type: 'string',
+			placeholder: 'https://backlog.centrumosk.pl',
+			default: '',
+			description: 'Base URL of your OpenProject instance, without a trailing slash',
+		},
+		{
+			displayName: 'Access Token',
+			name: 'accessToken',
+			type: 'string',
+			typeOptions: { password: true },
+			default: '',
+			description: 'Your OpenProject API key',
+		},
+	];
 
+	authenticate: IAuthenticateGeneric = {
+		type: 'generic',
+		properties: {
+			auth: {
+				username: 'apikey',
+				password: '={{$credentials.accessToken}}',
+			},
+		},
+	};
+
+	test: ICredentialTestRequest = {
+		request: {
+			baseURL: '={{$credentials.url}}',
+			url: '/api/v3/configuration',
+		},
+	};
 }
