@@ -22,3 +22,19 @@ export function buildProjectFilters(input: ProjectFilterInput): string | undefin
 
 	return filterArray.length > 0 ? JSON.stringify(filterArray) : undefined;
 }
+
+export type TaskFilterInput = {
+	status?: string;
+};
+
+export function buildTaskFilters(input: TaskFilterInput): string | undefined {
+	const filterArray: IDataObject[] = [];
+
+	if (input.status) {
+		filterArray.push({
+			status: { operator: '=', values: [input.status] },
+		});
+	}
+
+	return filterArray.length > 0 ? JSON.stringify(filterArray) : undefined;
+}

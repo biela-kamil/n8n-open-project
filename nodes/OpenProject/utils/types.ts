@@ -47,6 +47,21 @@ export type OpenProjectTypesCollection = {
 	};
 }
 
+export type OpenProjectStatus = {
+	id: number;
+	name: string;
+};
+
+export type OpenProjectStatusesCollection = {
+	total: number;
+	count: number;
+	pageSize: number;
+	offset: number;
+	_embedded?: {
+		elements?: OpenProjectStatus[];
+	};
+};
+
 export type OpenProjectCollection = {
 	total: number;
 	count: number;

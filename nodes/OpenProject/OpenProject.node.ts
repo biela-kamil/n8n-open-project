@@ -16,6 +16,7 @@ import {getTaskById} from "./resources/tasks/get";
 import {updateTask} from "./resources/tasks/update";
 import {typesDescription} from "./resources/types";
 import {getTypes as methodGetTypes } from "./methods/types/get";
+import {getStatuses} from "./methods/statuses/get";
 import {getTypes} from "./resources/types/getAll";
 
 type OperationFn = (this: IExecuteFunctions, itemIndex: number) => Promise<INodeExecutionData[]>;
@@ -73,6 +74,9 @@ export class OpenProject implements INodeType {
 		listSearch: {
 			getProjects,
 			getTypes: methodGetTypes,
+		},
+		loadOptions: {
+			getStatuses,
 		},
 	};
 
