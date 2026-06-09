@@ -1,67 +1,70 @@
-# Publishes this n8n community node package to npm on every version tag push.
+# Publishes this n8n community node package to npm when a version tag is pushed.
+#
+# MODEL: the tag is the single source of truth for the version. You create a
+# tag named after the version (e.g. 0.2.0), push it, and this workflow writes
+# that version into package.json, builds, publishes to npm with provenance,
+# and commits the version bump back to main.
 #
 # Starting May 1 2026, n8n requires all community nodes to be published via
 # GitHub Actions with npm provenance statements. This workflow satisfies that
 # requirement. Provenance lets anyone cryptographically verify that a package
 # was built by this exact workflow, from this exact repository and commit.
 #
+# ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
+#
+#   git tag 0.2.0
+#   git push origin 0.2.0
+#
+# That's it. The workflow does the rest (bump package.json, build, publish,
+# commit the bump back to main).
+#
 # ─── PREREQUISITES ─────────────────────────────────────────────────────────────
 #
-# @n8n/node-cli ≥ 0.23.0 is required. Earlier versions do not support the
-# provenance flag passed by `npm run release` in CI, and the publish step will
-# fail. Check the version installed in this project with:
+# @n8n/node-cli ≥ 0.23.0 is required (build/lint run via the prepublishOnly
+# hook). Check with `npm list @n8n/node-cli`; upgrade with
+# `npm install --save-dev @n8n/node-cli@latest`.
 #
-#   npm list @n8n/node-cli
-#
-# To upgrade:
-#
-#   npm install --save-dev @n8n/node-cli@latest
-#
-# ─── ONE-TIME SETUP ────────────────────────────────────────────────────────────
+# ─── ONE-TIME SETUP (npm auth) ─────────────────────────────────────────────────
 #
 # Option A — OIDC Trusted Publishing (recommended, no long-lived secrets):
 #   1. Log in to npmjs.com and open your package's settings.
 #   2. Under "Publish access" → "Trusted Publishers", click "Add a publisher".
 #   3. Select GitHub Actions and fill in:
-#        Repository owner: <your-github-username-or-org>
-#        Repository name:  <your-repo-name>
+#        Repository owner: biela-kamil
+#        Repository name:  n8n-open-project
 #        Workflow name:    publish.yml
 #        Environment:      (leave blank unless you use GitHub Environments)
-#   4. Leave the NPM_TOKEN secret unset in this repository. GitHub's OIDC
-#      token is used instead — no secret ever touches your repo settings.
+#   4. Leave the NPM_TOKEN secret unset. GitHub's OIDC token is used instead.
 #
 # Option B — npm Automation Token (fallback):
-#   1. On npmjs.com: Access Tokens → Generate New Token → Granular Access Token.
-#      Scope it to this package with "Read and write" publish permission.
-#   2. In GitHub: Settings → Secrets and variables → Actions → New secret.
-#      Name it NPM_TOKEN and paste the token value.
+#   1. On npmjs.com: Access Tokens → Generate New Token → Granular Access Token,
+#      scoped to this package with "Read and write" publish permission.
+#   2. In GitHub: Settings → Secrets and variables → Actions → New secret named
+#      NPM_TOKEN.
 #
-# Both options work with --provenance. Provenance is signed by GitHub's OIDC
-# infrastructure regardless of how npm authentication is handled.
+# ─── BRANCH PROTECTION NOTE ────────────────────────────────────────────────────
+#
+# The final step pushes a "chore: release" commit to main. If main has branch
+# protection that blocks direct pushes, either allow github-actions[bot] to
+# bypass it, or remove the commit-back step.
 #
 # ─── TAG CONVENTION ────────────────────────────────────────────────────────────
 #
-# This workflow triggers on tags matching "*.*.*" (e.g. 0.2.0).
-# If you prefer tags with a "v" prefix (e.g. v0.2.0), change the filter to:
-#   tags: ['v*.*.*']
-#
-# ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
-#
-# Run the following command locally to start an interactive release:
-#
-#   npm run release
-#
-# This will lint, build, prompt for a version bump, update the changelog,
-# commit, tag, and push — which triggers this workflow to publish to npm.
+# Triggers on tags matching "*.*.*" (e.g. 0.2.0). For a "v" prefix (v0.2.0),
+# change the filter to 'v*.*.*' AND strip the "v" when setting the version
+# (e.g. VERSION="${GITHUB_REF_NAME#v}").
 
 name: Publish
 
 on:
   push:
     tags:
-      # Matches 0.1.0, 1.2.3, 2.0.0-rc.1, etc.
-      # See "TAG CONVENTION" above if you prefer tags with a "v" prefix.
       - '*.*.*'
+
+# Avoid concurrent releases stepping on each other when pushing back to main.
+concurrency:
+  group: publish
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -71,31 +74,46 @@ jobs:
     permissions:
       # Required to mint an OIDC token for npm provenance attestation.
       id-token: write
-      # Scoped down from the default (write) for least-privilege publishing.
-      contents: read
+      # Required to push the version-bump commit back to main.
+      contents: write
 
     steps:
+      # Check out main (not the detached tag) so we can commit the bump back.
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Release
-        # Publishes to npm with a provenance attestation (requires id-token: write above).
-        # Lint and build run automatically as part of the release process.
-        #
-        # Option A (OIDC): leave NPM_TOKEN unset — the token step is skipped and
-        #   npm uses the OIDC exchange instead.
-        # Option B (token): set NPM_TOKEN in repo secrets — it is written to
-        #   .npmrc here before publishing.
-        run: |
-          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-          npm run release
+      - name: Set version from tag
+        # The tag name is the version. Write it into package.json without
+        # creating another git tag. --allow-same-version keeps re-runs idempotent.
+        run: npm version "$GITHUB_REF_NAME" --no-git-tag-version --allow-same-version
+
+      - name: Publish to npm
+        # Build and lint run automatically via the prepublishOnly hook.
+        # --provenance requires the id-token: write permission above.
+        # Option A (OIDC): leave NPM_TOKEN unset — npm uses the OIDC exchange.
+        # Option B (token): set NPM_TOKEN — setup-node writes it to .npmrc.
+        run: npm publish --provenance --access public
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit version bump back to main
+        run: |
+          if git diff --quiet -- package.json package-lock.json; then
+            echo "No version change to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: release $GITHUB_REF_NAME" -- package.json package-lock.json
+          git push origin HEAD:main
