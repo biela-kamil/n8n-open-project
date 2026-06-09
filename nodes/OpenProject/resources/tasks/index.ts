@@ -105,7 +105,7 @@ export const tasksDescription: INodeProperties[] = [
 	},
 	{
 		displayName: 'Description',
-		name: 'description',
+		name: 'taskDescription',
 		type: 'string',
 		default: '',
 		displayOptions: {
@@ -130,7 +130,7 @@ export const tasksDescription: INodeProperties[] = [
 			},
 			{
 				displayName: 'Description',
-				name: 'description',
+				name: 'taskDescription',
 				type: 'string',
 				default: '',
 			},
