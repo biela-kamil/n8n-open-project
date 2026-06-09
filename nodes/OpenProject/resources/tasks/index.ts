@@ -103,6 +103,31 @@ export const tasksDescription: INodeProperties[] = [
 			show: { ...showOnlyResource, operation: ['create'] },
 		},
 	},
+
+	{
+		displayName: 'Users',
+		name: 'user',
+		type: 'resourceLocator',
+		default: { mode: 'list', value: '' },
+		required: true,
+		description: 'The user of the task',
+		displayOptions: {
+			show: { ...showOnlyResource, operation: ['create'] },
+		},
+		modes: [
+			{
+				displayName: 'From List',
+				name: 'list',
+				type: 'list',
+				placeholder: 'Select a user...',
+				typeOptions: {
+					searchListMethod: 'getUsers',
+					searchable: true,
+					searchFilterRequired: false,
+				},
+			},
+		],
+	},
 	{
 		displayName: 'Description',
 		name: 'taskDescription',
@@ -136,7 +161,6 @@ export const tasksDescription: INodeProperties[] = [
 			},
 		],
 	},
-
 	{
 		displayName: 'Filters',
 		name: 'filters',

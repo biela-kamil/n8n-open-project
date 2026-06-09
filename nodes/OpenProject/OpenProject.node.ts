@@ -5,30 +5,18 @@ import {
 	INodeTypeDescription,
 	NodeConnectionTypes,
 	NodeOperationError,
-} from "n8n-workflow";
+} from 'n8n-workflow';
 import { projectsDescription } from './resources/projects';
-import { getProjects } from "./methods/projects/get";
-import { getProjects as resourceGetProjects } from "./resources/projects/getAll";
-import {createTask} from "./resources/tasks/create";
-import {tasksDescription} from "./resources/tasks";
-import {getTasks} from "./resources/tasks/getAll";
-import {getTaskById} from "./resources/tasks/get";
-import {updateTask} from "./resources/tasks/update";
-import {typesDescription} from "./resources/types";
-import {getTypes as methodGetTypes } from "./methods/types/get";
-import {getStatuses} from "./methods/statuses/get";
-import {getTypes} from "./resources/types/getAll";
+import { getProjects } from './methods/projects/get';
 
-type OperationFn = (this: IExecuteFunctions, itemIndex: number) => Promise<INodeExecutionData[]>;
+import { tasksDescription } from './resources/tasks';
 
-const operations: Record<string, OperationFn> = {
-	'project.getAll': resourceGetProjects,
-	'task.create': createTask,
-	'task.getAll': getTasks,
-	'task.getOne': getTaskById,
-	'task.update': updateTask,
-	'type.getAll': getTypes
-};
+import { typesDescription } from './resources/types';
+import { getTypes as methodGetTypes } from './methods/types/get';
+import { getStatuses } from './methods/statuses/get';
+import { getUsers } from './methods/users/get';
+import { usersDescription } from './resources/users';
+import { operations } from './operations';
 
 export class OpenProject implements INodeType {
 	description: INodeTypeDescription = {
@@ -38,7 +26,10 @@ export class OpenProject implements INodeType {
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Open Project Node',
-		icon: { light: 'file:../../icons/openproject.svg', dark: 'file:../../icons/openproject.dark.svg' },
+		icon: {
+			light: 'file:../../icons/openproject.svg',
+			dark: 'file:../../icons/openproject.dark.svg',
+		},
 		defaults: {
 			name: 'Open Project',
 		},
@@ -60,12 +51,14 @@ export class OpenProject implements INodeType {
 					{ name: 'Project', value: 'project' },
 					{ name: 'Task', value: 'task' },
 					{ name: 'Type', value: 'type' },
+					{ name: 'User', value: 'user' },
 				],
 				default: 'project',
 			},
 			...projectsDescription,
 			...tasksDescription,
-			...typesDescription
+			...typesDescription,
+			...usersDescription,
 		],
 		usableAsTool: true,
 	};
@@ -74,6 +67,7 @@ export class OpenProject implements INodeType {
 		listSearch: {
 			getProjects,
 			getTypes: methodGetTypes,
+			getUsers,
 		},
 		loadOptions: {
 			getStatuses,
