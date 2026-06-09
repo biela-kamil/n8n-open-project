@@ -1,7 +1,7 @@
 {
 	"name": "n8n-nodes-open-project",
 	"version": "0.1.0",
-	"description": "",
+	"description": "n8n community node to interact with the OpenProject API",
 	"license": "MIT",
 	"homepage": "",
 	"keywords": [
@@ -9,8 +9,8 @@
 		"open-project"
 	],
 	"author": {
-		"name": "",
-		"email": ""
+		"name": "Kamil Biela",
+		"email": "biela.kamil@gmail.com"
 	},
 	"repository": {
 		"type": "git",

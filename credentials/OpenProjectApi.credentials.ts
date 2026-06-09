@@ -2,13 +2,15 @@ import type {
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
+	Icon,
 	INodeProperties,
 } from "n8n-workflow";
 
 export class OpenProjectApi implements ICredentialType {
 	name = 'openProjectApi';
 	displayName = 'Open Project API';
-	documentationUrl = 'openProject';
+	documentationUrl = 'https://www.openproject.org/docs/api/';
+	icon: Icon = { light: 'file:../icons/openproject.svg', dark: 'file:../icons/openproject.dark.svg' };
 
 	properties: INodeProperties[] = [
 		{
