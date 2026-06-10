@@ -9,6 +9,7 @@ export type OpenProjectElement = {
 export type OpenProjectTask = {
 	id: number;
 	subject: string;
+	lockVersion: number;
 	description: {
 		raw: string;
 		html: string;
@@ -30,7 +31,21 @@ export type OpenProjectTask = {
 			title: string;
 		};
 	};
+	_embedded: {
+		parent?: OpenProjectTask;
+	};
 };
+
+export type OpenProjectComment = {
+	_type: 'Activity::Comment';
+	id: number;
+	createdAt: Date;
+	comment: {
+		raw: string;
+	};
+};
+
+export type OpenProjectActivity = OpenProjectComment;
 
 export type OpenProjectType = {
 	id: string;
@@ -64,6 +79,16 @@ export type OpenProjectTypesCollection = {
 	offset: number;
 	_embedded?: {
 		elements?: OpenProjectType[];
+	};
+};
+
+export type OpenProjectActivitiesCollection = {
+	total: number;
+	count: number;
+	pageSize: number;
+	offset: number;
+	_embedded?: {
+		elements?: OpenProjectActivity[];
 	};
 };
 

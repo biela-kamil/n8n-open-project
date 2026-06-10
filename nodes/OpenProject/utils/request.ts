@@ -6,15 +6,15 @@ import type {
 	IHttpRequestMethods,
 	IHttpRequestOptions,
 	ILoadOptionsFunctions,
-} from "n8n-workflow";
+} from 'n8n-workflow';
 
-export async function openProjectRequest(
+export async function openProjectRequest<T>(
 	this: IHookFunctions | IExecuteFunctions | IExecuteSingleFunctions | ILoadOptionsFunctions,
 	method: IHttpRequestMethods,
 	resource: string,
 	qs: IDataObject = {},
 	body: IDataObject | undefined = undefined,
-) {
+): Promise<T> {
 	const credentials = await this.getCredentials('openProjectApi');
 	const baseUrl = (credentials.url as string).replace(/\/$/, '');
 

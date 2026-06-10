@@ -9,6 +9,7 @@ import { createTask } from './resources/tasks/create';
 import { getUsers } from './resources/users/getAll';
 import { getStatusesByTaskId } from './resources/tasks/statuses';
 import { getPriorities } from './resources/priorities/getAll';
+import { addComment } from './resources/tasks/addComment';
 
 type OperationFn = (this: IExecuteFunctions, itemIndex: number) => Promise<INodeExecutionData[]>;
 
@@ -22,4 +23,5 @@ export const operations: Record<string, OperationFn> = {
 	'user.getAll': getUsers,
 	'task.statuses': getStatusesByTaskId,
 	'priority.getAll': getPriorities,
+	'task.addComment': addComment,
 };

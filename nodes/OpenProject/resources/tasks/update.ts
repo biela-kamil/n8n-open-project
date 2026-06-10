@@ -1,5 +1,7 @@
 import { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { openProjectRequest } from '../../utils/request';
+import { parseTask } from '../../utils/task';
+import { OpenProjectTask } from '../../utils/types';
 
 export async function updateTask(
 	this: IExecuteFunctions,
@@ -15,10 +17,17 @@ export async function updateTask(
 		extractValue: true,
 	}) as string;
 
-	const current = await openProjectRequest.call(this, 'GET', `/work_packages/${id}`, {}, {});
+	const current = (await openProjectRequest.call(
+		this,
+		'GET',
+		`/work_packages/${id}`,
+		{},
+		{},
+	)) as OpenProjectTask;
 	const lockVersion = current.lockVersion;
 
-	const body: IDataObject = { lockVersion };
+	const links: IDataObject = {};
+	const body: IDataObject = { lockVersion, _links: links };
 
 	if (subject !== '') {
 		body.subject = subject;
@@ -31,34 +40,33 @@ export async function updateTask(
 		};
 	}
 
+	const parentTaskId = this.getNodeParameter('parentTaskId', itemIndex, null) as string | null;
+
+	if (parentTaskId) {
+		links.parent = { href: `/api/v3/work_packages/${parentTaskId}` };
+	}
+
 	if (status !== '') {
-		body._links = {
-			status: { href: `/api/v3/statuses/${status}` },
-		};
+		links.status = { href: `/api/v3/statuses/${status}` };
 	}
 
 	if (priority !== '') {
-		body._links = {
-			priority: { href: `/api/v3/priorities/${priority}` },
-		};
+		links.priority = { href: `/api/v3/priorities/${priority}` };
 	}
 
-	const response = await openProjectRequest.call(this, 'PATCH', `/work_packages/${id}`, {}, body);
+	const response = (await openProjectRequest.call(
+		this,
+		'PATCH',
+		`/work_packages/${id}`,
+		{},
+		body,
+	)) as OpenProjectTask;
 
-	const json = {
-		id: response.id,
-		subject: response.subject,
-		description: response.description.raw,
-		project: response['_links'].project.title,
-		type: response['_links'].type.title,
-		priority: response['_links'].priority.title,
-		status: response['_links'].status.title,
-		author: response['_links'].author.title,
-	};
+	const task = parseTask(response);
 
 	return [
 		{
-			json,
+			json: task,
 		},
 	];
 }

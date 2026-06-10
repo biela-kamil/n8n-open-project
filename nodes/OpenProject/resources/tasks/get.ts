@@ -1,28 +1,35 @@
-import {IExecuteFunctions, INodeExecutionData} from "n8n-workflow";
-import {openProjectRequest} from "../../utils/request";
+import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { openProjectRequest } from '../../utils/request';
+import { OpenProjectActivitiesCollection, OpenProjectTask } from '../../utils/types';
+import { parseTask } from '../../utils/task';
 
 export async function getTaskById(
-    this: IExecuteFunctions,
-    itemIndex: number,
+	this: IExecuteFunctions,
+	itemIndex: number,
 ): Promise<INodeExecutionData[]> {
+	const id = this.getNodeParameter('id', itemIndex) as string;
 
+	const [taskData, resActivities] = (await Promise.all([
+		openProjectRequest.call(this, 'GET', `/work_packages/${id}`, {}),
+		openProjectRequest.call(this, 'GET', `/work_packages/${id}/activities`, {}),
+	])) as [OpenProjectTask, OpenProjectActivitiesCollection];
 
-    const id = this.getNodeParameter('id', itemIndex);
+	const comments = (resActivities._embedded?.elements ?? [])
+		.filter((com) => com['_type'] === 'Activity::Comment')
+		.map((comment) => ({
+			id: comment.id,
+			createdAt: comment.createdAt,
+			content: comment.comment.raw,
+		}));
 
-    const response = await openProjectRequest.call(this, 'GET', `/work_packages/${id}`, {});
+	const task = parseTask(taskData);
 
-    return [{
-        json: {
-            id: response.id,
-            subject: response.subject,
-            description: response.description.raw,
-            project: response["_links"].project.title,
-            type: response["_links"].type.title,
-            priority: response["_links"].priority.title,
-            status: response["_links"].status.title,
-            author: response["_links"].author.title,
-
-        }
-    }]
-
+	return [
+		{
+			json: {
+				task,
+				comments: comments,
+			},
+		},
+	];
 }

@@ -11,6 +11,11 @@ export const tasksDescription: INodeProperties[] = [
 		noDataExpression: true,
 		options: [
 			{
+				name: 'Add Comment',
+				value: 'addComment',
+				action: 'Add comment',
+			},
+			{
 				name: 'Create Task',
 				value: 'create',
 				action: 'Create task',
@@ -93,7 +98,7 @@ export const tasksDescription: INodeProperties[] = [
 		displayName: 'ID',
 		name: 'id',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['getOne', 'update', 'statuses'] },
+			show: { ...showOnlyResource, operation: ['getOne', 'update', 'statuses', 'addComment'] },
 		},
 		type: 'string',
 		default: '',
@@ -139,7 +144,7 @@ export const tasksDescription: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['create'] },
+			show: { ...showOnlyResource, operation: ['create', 'addComment'] },
 		},
 	},
 	{
@@ -160,6 +165,15 @@ export const tasksDescription: INodeProperties[] = [
 		description: 'New description for the task. Leave empty to keep the current value.',
 		displayOptions: {
 			show: { ...showOnlyResource, operation: ['update'] },
+		},
+	},
+	{
+		displayName: 'Parent Task ID',
+		name: 'parentTaskId',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: { ...showOnlyResource, operation: ['update', 'create'] },
 		},
 	},
 	{

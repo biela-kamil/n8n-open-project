@@ -1,5 +1,7 @@
 import { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { openProjectRequest } from '../../utils/request';
+import { parseTask } from '../../utils/task';
+import { OpenProjectTask } from '../../utils/types';
 
 export async function createTask(
 	this: IExecuteFunctions,
@@ -20,28 +22,39 @@ export async function createTask(
 
 	const description = this.getNodeParameter('taskDescription', itemIndex, '');
 
-	const response = await openProjectRequest.call(
+	const parentTaskId = this.getNodeParameter('parentTaskId', itemIndex, null) as string | null;
+
+	const links: IDataObject = {
+		project: { href: `/api/v3/projects/${project}` },
+		type: { href: `/api/v3/types/${type}` },
+		priority: { href: `/api/v3/priorities/${priority}` },
+	};
+
+	if (parentTaskId) {
+		links.parent = { href: `/api/v3/work_packages/${parentTaskId}` };
+	}
+
+	const data = {
+		subject,
+		_links: links,
+		description: {
+			format: 'markdown',
+			raw: description,
+		},
+	};
+	const response = (await openProjectRequest.call(
 		this,
 		'POST',
 		'/work_packages',
 		{},
-		{
-			subject,
-			_links: {
-				project: { href: `/api/v3/projects/${project}` },
-				type: { href: `/api/v3/types/${type}` },
-				priority: { href: `/api/v3/priorities/${priority}` },
-			},
-			description: {
-				format: 'markdown',
-				raw: description,
-			},
-		},
-	);
+		data,
+	)) as OpenProjectTask;
+
+	const task = parseTask(response);
 
 	return [
 		{
-			json: response as IDataObject,
+			json: task,
 		},
 	];
 }
