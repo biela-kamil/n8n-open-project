@@ -1,6 +1,6 @@
 import { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { openProjectRequest } from '../../utils/request';
-import { OpenProjectTask } from '../../utils/types';
+import { OpenProjectCollection, OpenProjectTask } from '../../utils/types';
 import { buildTaskFilters, type TaskFilterInput } from '../../utils/filters';
 
 export async function getTasks(
@@ -25,12 +25,12 @@ export async function getTasks(
 		qs.filters = filterString;
 	}
 
-	const response = await openProjectRequest.call(
+	const response = (await openProjectRequest.call(
 		this,
 		'GET',
 		`/projects/${project}/work_packages`,
 		qs,
-	);
+	)) as OpenProjectCollection<OpenProjectTask>;
 
 	const elements = response._embedded?.elements ?? [];
 	collected.push(...elements);

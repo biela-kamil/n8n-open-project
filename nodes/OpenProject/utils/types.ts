@@ -1,4 +1,4 @@
-export type OpenProjectElement = {
+export type OpenProjectProject = {
 	id: number;
 	identifier: string;
 	name: string;
@@ -82,6 +82,16 @@ export type OpenProjectTypesCollection = {
 	};
 };
 
+export type OpenProjectPrioritiesCollection = {
+	total: number;
+	count: number;
+	pageSize: number;
+	offset: number;
+	_embedded?: {
+		elements?: OpenProjectType[];
+	};
+};
+
 export type OpenProjectActivitiesCollection = {
 	total: number;
 	count: number;
@@ -117,12 +127,24 @@ export type OpenProjectStatusesCollection = {
 	};
 };
 
-export type OpenProjectCollection = {
+export type OpenProjectCollection<T> = {
 	total: number;
 	count: number;
 	pageSize: number;
 	offset: number;
 	_embedded?: {
-		elements?: OpenProjectElement[];
+		elements?: T[];
+	};
+};
+
+export type OpenProjectTaskForm = {
+	_embedded: {
+		schema: {
+			status: {
+				_embedded: {
+					allowedValues: OpenProjectStatus[];
+				};
+			};
+		};
 	};
 };

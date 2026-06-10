@@ -1,9 +1,13 @@
 import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { openProjectRequest } from '../../utils/request';
-import { OpenProjectUser } from '../../utils/types';
+import { OpenProjectCollection, OpenProjectUser } from '../../utils/types';
 
 export async function getUsers(this: IExecuteFunctions): Promise<INodeExecutionData[]> {
-	const response = await openProjectRequest.call(this, 'GET', `/users`);
+	const response = (await openProjectRequest.call(
+		this,
+		'GET',
+		`/users`,
+	)) as OpenProjectCollection<OpenProjectUser>;
 	const elements: OpenProjectUser[] = response._embedded?.elements ?? [];
 
 	return elements.map((element) => ({

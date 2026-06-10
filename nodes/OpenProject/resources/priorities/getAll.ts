@@ -1,9 +1,13 @@
 import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { openProjectRequest } from '../../utils/request';
-import { OpenProjectPriority } from '../../utils/types';
+import { OpenProjectPrioritiesCollection, OpenProjectPriority } from '../../utils/types';
 
 export async function getPriorities(this: IExecuteFunctions): Promise<INodeExecutionData[]> {
-	const response = await openProjectRequest.call(this, 'GET', `/priorities`);
+	const response = (await openProjectRequest.call(
+		this,
+		'GET',
+		`/priorities`,
+	)) as OpenProjectPrioritiesCollection;
 	const elements: OpenProjectPriority[] = response._embedded?.elements ?? [];
 
 	return elements.map((element) => ({

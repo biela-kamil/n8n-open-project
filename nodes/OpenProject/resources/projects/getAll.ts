@@ -1,8 +1,7 @@
-import type { IDataObject, IExecuteFunctions, INodeExecutionData } from "n8n-workflow";
-import { openProjectRequest } from "../../utils/request";
-import type { OpenProjectCollection, OpenProjectElement } from "../../utils/types";
-import { buildProjectFilters, type ProjectFilterInput } from "../../utils/filters";
-
+import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { openProjectRequest } from '../../utils/request';
+import { OpenProjectCollection, OpenProjectProject } from '../../utils/types';
+import { buildProjectFilters, type ProjectFilterInput } from '../../utils/filters';
 
 export async function getProjects(
 	this: IExecuteFunctions,
@@ -13,11 +12,13 @@ export async function getProjects(
 		? Number.POSITIVE_INFINITY
 		: (this.getNodeParameter('limit', itemIndex, 50) as number);
 
-	const filters = buildProjectFilters(this.getNodeParameter('filters', itemIndex, {}) as ProjectFilterInput);
+	const filters = buildProjectFilters(
+		this.getNodeParameter('filters', itemIndex, {}) as ProjectFilterInput,
+	);
 	const pageSize = returnAll ? 100 : Math.min(100, limit);
 	let offset = 1;
 
-	const collected: OpenProjectElement[] = [];
+	const collected: OpenProjectProject[] = [];
 
 	while (collected.length < limit) {
 		const qs: IDataObject = { offset, pageSize };
@@ -30,7 +31,7 @@ export async function getProjects(
 			'GET',
 			'/projects',
 			qs,
-		)) as OpenProjectCollection;
+		)) as OpenProjectCollection<OpenProjectProject>;
 		const elements = response._embedded?.elements ?? [];
 		collected.push(...elements);
 

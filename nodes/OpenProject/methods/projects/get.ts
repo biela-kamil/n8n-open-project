@@ -3,10 +3,10 @@ import type {
 	ILoadOptionsFunctions,
 	INodeListSearchItems,
 	INodeListSearchResult,
-} from "n8n-workflow";
-import { openProjectRequest } from "../../utils/request";
-import type { OpenProjectCollection } from "../../utils/types";
-import { buildProjectFilters } from "../../utils/filters";
+} from 'n8n-workflow';
+import { openProjectRequest } from '../../utils/request';
+import { OpenProjectCollection, OpenProjectProject } from '../../utils/types';
+import { buildProjectFilters } from '../../utils/filters';
 
 export async function getProjects(
 	this: ILoadOptionsFunctions,
@@ -27,7 +27,7 @@ export async function getProjects(
 		'GET',
 		'/projects',
 		qs,
-	)) as OpenProjectCollection;
+	)) as OpenProjectCollection<OpenProjectProject>;
 	const elements = response._embedded?.elements ?? [];
 
 	const results: INodeListSearchItems[] = elements.map((el) => ({
