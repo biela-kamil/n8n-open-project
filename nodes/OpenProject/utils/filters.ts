@@ -26,6 +26,11 @@ export function buildProjectFilters(input: ProjectFilterInput): string | undefin
 export type TaskFilterInput = {
 	statusGroup?: string;
 	status?: string;
+	search?: string;
+	type?: string;
+	priority?: string;
+	assignee?: string;
+	project?: string;
 };
 
 export function buildTaskFilters(input: TaskFilterInput): string | undefined {
@@ -42,6 +47,36 @@ export function buildTaskFilters(input: TaskFilterInput): string | undefined {
 	} else if (input.status) {
 		filterArray.push({
 			status: { operator: '=', values: [input.status] },
+		});
+	}
+
+	if (input.search) {
+		filterArray.push({
+			search: { operator: '**', values: [input.search] },
+		});
+	}
+
+	if (input.type) {
+		filterArray.push({
+			type: { operator: '=', values: [input.type] },
+		});
+	}
+
+	if (input.priority) {
+		filterArray.push({
+			priority: { operator: '=', values: [input.priority] },
+		});
+	}
+
+	if (input.assignee) {
+		filterArray.push({
+			assignee: { operator: '=', values: [input.assignee] },
+		});
+	}
+
+	if (input.project) {
+		filterArray.push({
+			project: { operator: '=', values: [input.project] },
 		});
 	}
 

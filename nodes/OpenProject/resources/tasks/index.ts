@@ -16,6 +16,11 @@ export const tasksDescription: INodeProperties[] = [
 				action: 'Add comment',
 			},
 			{
+				name: 'Change Status in Task',
+				value: 'changeStatus',
+				action: 'Change status in task',
+			},
+			{
 				name: 'Create Task',
 				value: 'create',
 				action: 'Create task',
@@ -37,6 +42,12 @@ export const tasksDescription: INodeProperties[] = [
 				action: 'Returns the possible statuses for the task',
 			},
 			{
+				name: 'Search Tasks',
+				value: 'search',
+				action: 'Search tasks',
+				description: 'Search tasks across projects with filters',
+			},
+			{
 				name: 'Update Task',
 				value: 'update',
 				action: 'Update task',
@@ -54,7 +65,7 @@ export const tasksDescription: INodeProperties[] = [
 		required: true,
 		description: 'The project to create the task in',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['create', 'getAll'] },
+			show: { ...showOnlyResource, operation: ['create', 'getAll', 'search'] },
 		},
 		modes: [
 			{
@@ -98,7 +109,10 @@ export const tasksDescription: INodeProperties[] = [
 		displayName: 'ID',
 		name: 'id',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['getOne', 'update', 'statuses', 'addComment'] },
+			show: {
+				...showOnlyResource,
+				operation: ['getOne', 'update', 'statuses', 'addComment', 'changeStatus'],
+			},
 		},
 		type: 'string',
 		default: '',
@@ -144,7 +158,7 @@ export const tasksDescription: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['create', 'addComment'] },
+			show: { ...showOnlyResource, operation: ['create', 'addComment', 'changeStatus'] },
 		},
 	},
 	{
@@ -181,9 +195,10 @@ export const tasksDescription: INodeProperties[] = [
 		name: 'updateStatus',
 		type: 'resourceLocator',
 		default: { mode: 'list', value: '' },
-		description: 'New status for the task. Leave empty to keep the current value.',
+		description:
+			'Status for the task. For Update, leave empty to keep the current value; for Change Status it is required.',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['update'] },
+			show: { ...showOnlyResource, operation: ['update', 'changeStatus'] },
 		},
 		modes: [
 			{
@@ -237,7 +252,7 @@ export const tasksDescription: INodeProperties[] = [
 		displayName: 'Return All',
 		name: 'returnAll',
 		type: 'boolean',
-		displayOptions: { show: { ...showOnlyResource, operation: ['getAll'] } },
+		displayOptions: { show: { ...showOnlyResource, operation: ['getAll', 'search'] } },
 		default: false,
 		description: 'Whether to return all results or only up to a given limit',
 	},
@@ -246,7 +261,7 @@ export const tasksDescription: INodeProperties[] = [
 		name: 'limit',
 		type: 'number',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['getAll'], returnAll: [false] },
+			show: { ...showOnlyResource, operation: ['getAll', 'search'], returnAll: [false] },
 		},
 		typeOptions: { minValue: 1 },
 		default: 50,
@@ -256,7 +271,7 @@ export const tasksDescription: INodeProperties[] = [
 		displayName: 'Sort By',
 		name: 'sortBy',
 		type: 'options',
-		displayOptions: { show: { ...showOnlyResource, operation: ['getAll'] } },
+		displayOptions: { show: { ...showOnlyResource, operation: ['getAll', 'search'] } },
 		options: [
 			{ name: 'Assignee', value: 'assignee' },
 			{ name: 'Author', value: 'author' },
@@ -272,14 +287,15 @@ export const tasksDescription: INodeProperties[] = [
 			{ name: 'Updated At', value: 'updatedAt' },
 		],
 		default: '',
-		description: 'The column to sort the returned tasks by. Choose "Default" to keep OpenProject\'s default ordering.',
+		description:
+			'The column to sort the returned tasks by. Choose "Default" to keep OpenProject\'s default ordering.',
 	},
 	{
 		displayName: 'Sort Order',
 		name: 'sortOrder',
 		type: 'options',
 		displayOptions: {
-			show: { ...showOnlyResource, operation: ['getAll'] },
+			show: { ...showOnlyResource, operation: ['getAll', 'search'] },
 			hide: { sortBy: [''] },
 		},
 		options: [
@@ -288,6 +304,15 @@ export const tasksDescription: INodeProperties[] = [
 		],
 		default: 'asc',
 		description: 'The direction to sort by when a "Sort By" column is selected',
+	},
+	{
+		displayName: 'Search Text',
+		name: 'searchText',
+		type: 'string',
+		default: '',
+		displayOptions: { show: { ...showOnlyResource, operation: ['search'] } },
+		description:
+			'Full-text search across task subject, description, and comments. Leave empty to ignore.',
 	},
 	{
 		displayName: 'Filters',

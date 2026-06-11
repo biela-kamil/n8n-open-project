@@ -1,5 +1,7 @@
 import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { getTasks } from './resources/tasks/getAll';
+import { searchTasks } from './resources/tasks/search';
+import { changeTaskStatus } from './resources/tasks/changeStatus';
 import { getTaskById } from './resources/tasks/get';
 import { updateTask } from './resources/tasks/update';
 import { getTypes } from './resources/types/getAll';
@@ -17,6 +19,8 @@ export const operations: Record<string, OperationFn> = {
 	'project.getAll': resourceGetProjects,
 	'task.create': createTask,
 	'task.getAll': getTasks,
+	'task.search': searchTasks,
+	'task.changeStatus': changeTaskStatus,
 	'task.getOne': getTaskById,
 	'task.update': updateTask,
 	'type.getAll': getTypes,

@@ -41,3 +41,27 @@ export async function getTypes(
     const nextPaginationToken = page * pageSize < response.total ? page + 1 : undefined;
     return { results, paginationToken: nextPaginationToken };
 }
+
+export async function getAllTypes(
+    this: ILoadOptionsFunctions,
+    filter?: string,
+): Promise<INodeListSearchResult> {
+    const response = (await openProjectRequest.call(
+        this,
+        'GET',
+        '/types',
+    )) as OpenProjectTypesCollection;
+    const elements = response._embedded?.elements ?? [];
+
+    let results: INodeListSearchItems[] = elements.map((el) => ({
+        name: el.name,
+        value: el.id,
+    }));
+
+    if (filter) {
+        const lower = filter.toLowerCase();
+        results = results.filter((el) => el.name.toLowerCase().includes(lower));
+    }
+
+    return { results };
+}
