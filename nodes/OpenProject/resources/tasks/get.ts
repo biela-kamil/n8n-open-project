@@ -27,7 +27,7 @@ export async function getTaskById(
 	return [
 		{
 			json: {
-				task,
+				...task,
 				comments: comments,
 			},
 		},

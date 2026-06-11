@@ -1,4 +1,4 @@
-import type { IDataObject } from "n8n-workflow";
+import type { IDataObject } from 'n8n-workflow';
 
 export type ProjectFilterInput = {
 	active?: string;
@@ -24,13 +24,22 @@ export function buildProjectFilters(input: ProjectFilterInput): string | undefin
 }
 
 export type TaskFilterInput = {
+	statusGroup?: string;
 	status?: string;
 };
 
 export function buildTaskFilters(input: TaskFilterInput): string | undefined {
 	const filterArray: IDataObject[] = [];
 
-	if (input.status) {
+	if (input.statusGroup === 'open') {
+		filterArray.push({
+			status: { operator: 'o', values: [] },
+		});
+	} else if (input.statusGroup === 'closed') {
+		filterArray.push({
+			status: { operator: 'c', values: [] },
+		});
+	} else if (input.status) {
 		filterArray.push({
 			status: { operator: '=', values: [input.status] },
 		});

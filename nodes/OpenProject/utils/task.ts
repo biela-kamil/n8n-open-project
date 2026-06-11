@@ -15,5 +15,7 @@ export function parseTask(taskData: OpenProjectTask): IDataObject {
 		status: taskData['_links'].status.title,
 		author: taskData['_links'].author.title,
 		parentTask: parentTask ?? undefined,
+		createdAt: taskData.createdAt,
+		updatedAt: taskData.updatedAt,
 	};
 }

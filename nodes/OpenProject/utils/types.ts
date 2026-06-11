@@ -34,6 +34,8 @@ export type OpenProjectTask = {
 	_embedded: {
 		parent?: OpenProjectTask;
 	};
+	updatedAt: Date;
+	createdAt: Date;
 };
 
 export type OpenProjectComment = {
