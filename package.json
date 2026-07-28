@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-open-project-api",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"description": "n8n community node to interact with the OpenProject API",
 	"license": "MIT",
 	"homepage": "",
