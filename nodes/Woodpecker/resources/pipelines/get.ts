@@ -21,7 +21,7 @@ export async function getPipeline(
 		'GET',
 		`/repos/${repo_id}/pipelines/${pipeline_number}`,
 		{},
-	)) as IDataObject & { workflows: IDataObject[] };
+	)) as IDataObject & { workflows: (IDataObject & { children: IDataObject[] })[] };
 
 	return [
 		{
@@ -40,7 +40,14 @@ export async function getPipeline(
 					state: workflow.state,
 					started: workflow.started,
 					finished: workflow.finished,
-					children: workflow.children,
+					steps: workflow.children?.map((step) => ({
+						step_id: step.id,
+						name: step.name,
+						state: step.state,
+						started: step.started,
+						finished: step.finished,
+						type: step.type,
+					})),
 				})),
 			},
 		},

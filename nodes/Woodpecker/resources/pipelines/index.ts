@@ -9,14 +9,19 @@ const showOnlyForPipelinesList = {
 	operation: ['list'],
 };
 
-const showOnlyForPipelinesGet = {
+const showOnlyForPipelinesGetLog = {
 	resource: ['pipelines'],
-	operation: ['get'],
+	operation: ['getLog'],
 };
 
 const showOnlyForPipelinesListOrGet = {
 	resource: ['pipelines'],
-	operation: ['list', 'get'],
+	operation: ['list', 'get', 'getLog'],
+};
+
+const showOnlyForPipelinesGetOrGetLog = {
+	resource: ['pipelines'],
+	operation: ['get', 'getLog'],
 };
 
 export const pipelinesDescription: INodeProperties[] = [
@@ -40,6 +45,12 @@ export const pipelinesDescription: INodeProperties[] = [
 				action: 'Get a pipeline',
 				description: 'Get a single pipeline by number',
 			},
+			{
+				name: 'Get Log',
+				value: 'getLog',
+				action: 'Get a pipeline step log',
+				description: 'Get the log lines for a pipeline step',
+			},
 		],
 	},
 	{
@@ -56,9 +67,18 @@ export const pipelinesDescription: INodeProperties[] = [
 		name: 'pipeline_number',
 		type: 'string',
 		required: true,
-		displayOptions: { show: showOnlyForPipelinesGet },
+		displayOptions: { show: showOnlyForPipelinesGetOrGetLog },
 		default: '',
 		description: 'Number of the pipeline to retrieve',
+	},
+	{
+		displayName: 'Step ID',
+		name: 'step_id',
+		type: 'string',
+		required: true,
+		displayOptions: { show: showOnlyForPipelinesGetLog },
+		default: '',
+		description: 'ID of the pipeline step to retrieve the log for',
 	},
 	{
 		displayName: 'Limit',

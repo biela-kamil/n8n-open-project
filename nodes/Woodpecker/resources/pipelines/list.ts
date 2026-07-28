@@ -5,6 +5,7 @@ function parsePipeline(pipeline: IDataObject): IDataObject {
 	return {
 		id: pipeline.id,
 		status: pipeline.status,
+		pipeline_number: pipeline.number,
 		created: pipeline.created,
 		started: pipeline.started,
 		finished: pipeline.finished,
@@ -14,7 +15,7 @@ function parsePipeline(pipeline: IDataObject): IDataObject {
 	};
 }
 
-export async function listRepositories(
+export async function listPipelines(
 	this: IExecuteFunctions,
 	itemIndex: number,
 ): Promise<INodeExecutionData[]> {
