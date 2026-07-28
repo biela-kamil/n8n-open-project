@@ -30,6 +30,7 @@ export async function getUsers(
 		value: el.id,
 	}));
 
-	const nextPaginationToken = page * pageSize < response.total ? page + 1 : undefined;
+	const nextPaginationToken =
+		page * pageSize < response.total ? String(page + 1) : undefined;
 	return { results, paginationToken: nextPaginationToken };
 }
