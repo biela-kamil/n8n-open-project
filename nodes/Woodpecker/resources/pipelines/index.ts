@@ -9,6 +9,16 @@ const showOnlyForPipelinesList = {
 	operation: ['list'],
 };
 
+const showOnlyForPipelinesGet = {
+	resource: ['pipelines'],
+	operation: ['get'],
+};
+
+const showOnlyForPipelinesListOrGet = {
+	resource: ['pipelines'],
+	operation: ['list', 'get'],
+};
+
 export const pipelinesDescription: INodeProperties[] = [
 	{
 		displayName: 'Operation',
@@ -24,6 +34,12 @@ export const pipelinesDescription: INodeProperties[] = [
 				action: 'List pipelines',
 				description: 'List pipelines for a repository',
 			},
+			{
+				name: 'Get',
+				value: 'get',
+				action: 'Get a pipeline',
+				description: 'Get a single pipeline by number',
+			},
 		],
 	},
 	{
@@ -31,9 +47,18 @@ export const pipelinesDescription: INodeProperties[] = [
 		name: 'repo_id',
 		type: 'string',
 		required: true,
-		displayOptions: { show: showOnlyForPipelinesList },
+		displayOptions: { show: showOnlyForPipelinesListOrGet },
 		default: '',
 		description: 'ID of the Woodpecker repository',
+	},
+	{
+		displayName: 'Pipeline Number',
+		name: 'pipeline_number',
+		type: 'string',
+		required: true,
+		displayOptions: { show: showOnlyForPipelinesGet },
+		default: '',
+		description: 'Number of the pipeline to retrieve',
 	},
 	{
 		displayName: 'Limit',
