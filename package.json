@@ -35,10 +35,12 @@
 		"n8nNodesApiVersion": 1,
 		"strict": true,
 		"credentials": [
-			"dist/credentials/OpenProjectApi.credentials.js"
+			"dist/credentials/OpenProjectApi.credentials.js",
+			"dist/credentials/WoodpeckerCredentialsApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/OpenProject/OpenProject.node.js"
+			"dist/nodes/OpenProject/OpenProject.node.js",
+			"dist/nodes/Woodpecker/Woodpecker.node.js"
 		]
 	},
 	"devDependencies": {
