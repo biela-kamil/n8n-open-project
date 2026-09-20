@@ -9,6 +9,7 @@ import {
 import { getProjects } from './methods/projects/get';
 import { operations } from './operations';
 import { projectsDescription } from './resources/projects';
+import { tasksDescription } from './resources/tasks';
 
 export class Kaneo implements INodeType {
 	description: INodeTypeDescription = {
@@ -49,6 +50,7 @@ export class Kaneo implements INodeType {
 				default: 'project',
 			},
 			...projectsDescription,
+			...tasksDescription,
 		],
 		usableAsTool: true,
 	};

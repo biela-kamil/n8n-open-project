@@ -25,3 +25,55 @@ export interface KaneoProjectDetail extends KaneoProjectBase {
 	position: number;
 	tasks: unknown[];
 }
+
+/** Task shape returned by `GET /task/{id}` and inside the board from `GET /task/tasks/{projectId}` */
+export interface KaneoTask {
+	id: string;
+	projectId: string;
+	number: number;
+	title: string;
+	description: string | null;
+	status: string;
+	priority: string | null;
+	position: number;
+	startDate: Date | null;
+	dueDate: Date | null;
+	createdAt: Date;
+	userId: string | null;
+	assigneeId: string | null;
+	assigneeName: string | null;
+	assigneeImage: string | null;
+	labels: unknown[];
+	externalLinks: unknown[];
+}
+
+/** Shape returned by `GET /task/tasks/{projectId}` */
+export interface KaneoTaskBoardResponse {
+	data: KaneoTaskBoard;
+	pagination: {
+		total: number;
+		page: number;
+		pageSize: number;
+		totalPages: number;
+	};
+}
+
+export interface KaneoTaskBoard {
+	id: string;
+	name: string;
+	slug: string;
+	icon: string | null;
+	description: string | null;
+	isPublic: boolean;
+	workspaceId: string;
+	columns: {
+		id: string;
+		slug: string;
+		name: string;
+		icon: string | null;
+		isFinal: boolean;
+		tasks: KaneoTask[];
+	}[];
+	archivedTasks: KaneoTask[];
+	plannedTasks: KaneoTask[];
+}
