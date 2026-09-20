@@ -77,3 +77,17 @@ export interface KaneoTaskBoard {
 	archivedTasks: KaneoTask[];
 	plannedTasks: KaneoTask[];
 }
+
+/** Board column returned by `GET /column/{projectId}`; `slug` is what tasks store as `status` */
+export interface KaneoColumn {
+	id: string;
+	projectId: string;
+	name: string;
+	slug: string;
+	position: number;
+	icon: string | null;
+	color: string | null;
+	isFinal: boolean;
+	createdAt: Date;
+	updatedAt: Date;
+}

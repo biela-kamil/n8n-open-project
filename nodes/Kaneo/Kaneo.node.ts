@@ -9,6 +9,7 @@ import {
 import { getProjects } from './methods/projects/get';
 import { operations } from './operations';
 import { projectsDescription } from './resources/projects';
+import { statusesDescription } from './resources/statuses';
 import { tasksDescription } from './resources/tasks';
 
 export class Kaneo implements INodeType {
@@ -43,6 +44,7 @@ export class Kaneo implements INodeType {
 				options: [
 					{ name: 'Priority', value: 'priority' },
 					{ name: 'Project', value: 'project' },
+					{ name: 'Status', value: 'status' },
 					{ name: 'Task', value: 'task' },
 					{ name: 'Type', value: 'type' },
 					{ name: 'User', value: 'user' },
@@ -50,6 +52,7 @@ export class Kaneo implements INodeType {
 				default: 'project',
 			},
 			...projectsDescription,
+			...statusesDescription,
 			...tasksDescription,
 		],
 		usableAsTool: true,
