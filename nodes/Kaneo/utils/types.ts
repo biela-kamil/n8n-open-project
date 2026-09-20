@@ -98,3 +98,14 @@ export interface KaneoColumn {
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+/** Shape returned by the `/label` endpoints. A label with `taskId` is a per-task copy of a workspace label. */
+export interface KaneoLabel {
+	id: string;
+	name: string;
+	color: string;
+	createdAt: Date;
+	updatedAt: Date;
+	taskId: string | null;
+	workspaceId: string | null;
+}
