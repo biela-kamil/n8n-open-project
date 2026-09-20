@@ -109,3 +109,30 @@ export interface KaneoLabel {
 	taskId: string | null;
 	workspaceId: string | null;
 }
+
+/** Shape returned by `GET /comment/{taskId}` */
+export interface KaneoComment {
+	id: string;
+	taskId: string;
+	userId: string;
+	content: string;
+	createdAt: Date;
+	updatedAt: Date;
+	user: { name: string; image: string | null };
+}
+
+/** Activity row returned by the comment write endpoints (and `GET /activity/{taskId}`) */
+export interface KaneoActivity {
+	id: string;
+	taskId: string;
+	type: string;
+	createdAt: Date;
+	updatedAt: Date;
+	userId: string | null;
+	content: string | null;
+	eventData: unknown;
+	externalUserName: string | null;
+	externalUserAvatar: string | null;
+	externalSource: string | null;
+	externalUrl: string | null;
+}

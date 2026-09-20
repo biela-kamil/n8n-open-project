@@ -1,4 +1,8 @@
 import { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { createComment } from './resources/comments/create';
+import { deleteComment } from './resources/comments/delete';
+import { getComments } from './resources/comments/getAll';
+import { updateComment } from './resources/comments/update';
 import { attachLabel } from './resources/labels/attach';
 import { createLabel } from './resources/labels/create';
 import { deleteLabel } from './resources/labels/delete';
@@ -19,6 +23,10 @@ import { updateTask } from './resources/tasks/update';
 type OperationFn = (this: IExecuteFunctions, itemIndex: number) => Promise<INodeExecutionData[]>;
 
 export const operations: Record<string, OperationFn> = {
+	'comment.create': createComment,
+	'comment.delete': deleteComment,
+	'comment.getAll': getComments,
+	'comment.update': updateComment,
 	'label.attach': attachLabel,
 	'label.create': createLabel,
 	'label.delete': deleteLabel,

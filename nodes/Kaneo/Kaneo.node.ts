@@ -8,6 +8,7 @@ import {
 } from 'n8n-workflow';
 import { getProjects } from './methods/projects/get';
 import { operations } from './operations';
+import { commentsDescription } from './resources/comments';
 import { labelsDescription } from './resources/labels';
 import { projectsDescription } from './resources/projects';
 import { statusesDescription } from './resources/statuses';
@@ -43,6 +44,7 @@ export class Kaneo implements INodeType {
 				type: 'options',
 				noDataExpression: true,
 				options: [
+					{ name: 'Comment', value: 'comment' },
 					{ name: 'Label', value: 'label' },
 					{ name: 'Priority', value: 'priority' },
 					{ name: 'Project', value: 'project' },
@@ -53,6 +55,7 @@ export class Kaneo implements INodeType {
 				],
 				default: 'project',
 			},
+			...commentsDescription,
 			...labelsDescription,
 			...projectsDescription,
 			...statusesDescription,
