@@ -14,6 +14,12 @@ export const tasksDescription: INodeProperties[] = [
 		default: 'getAll',
 		options: [
 			{
+				name: 'Create',
+				value: 'create',
+				action: 'Create a task',
+				description: 'Create a task in a Kaneo project',
+			},
+			{
 				name: 'Get',
 				value: 'get',
 				action: 'Get a task',
@@ -45,9 +51,9 @@ export const tasksDescription: INodeProperties[] = [
 		type: 'resourceLocator',
 		default: { mode: 'list', value: '' },
 		required: true,
-		description: 'The project to list tasks from',
+		description: 'The project the task belongs to',
 		displayOptions: {
-			show: { ...showOnlyForTasks, operation: ['getAll'] },
+			show: { ...showOnlyForTasks, operation: ['getAll', 'create'] },
 		},
 		modes: [
 			{
@@ -66,6 +72,76 @@ export const tasksDescription: INodeProperties[] = [
 				name: 'id',
 				type: 'string',
 				placeholder: 'e.g. 4e3b1c2a-...',
+			},
+		],
+	},
+	{
+		displayName: 'Title',
+		name: 'title',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'Title of the task',
+		displayOptions: {
+			show: { ...showOnlyForTasks, operation: ['create'] },
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: { ...showOnlyForTasks, operation: ['create'] },
+		},
+		options: [
+			{
+				displayName: 'Assignee ID',
+				name: 'userId',
+				type: 'string',
+				default: '',
+				description: 'ID of the user to assign the task to',
+			},
+			{
+				displayName: 'Description',
+				name: 'description',
+				type: 'string',
+				typeOptions: { rows: 4 },
+				default: '',
+			},
+			{
+				displayName: 'Due Date',
+				name: 'dueDate',
+				type: 'dateTime',
+				default: '',
+			},
+			{
+				displayName: 'Priority',
+				name: 'priority',
+				type: 'options',
+				default: 'no-priority',
+				options: [
+					{ name: 'High', value: 'high' },
+					{ name: 'Low', value: 'low' },
+					{ name: 'Medium', value: 'medium' },
+					{ name: 'No Priority', value: 'no-priority' },
+					{ name: 'Urgent', value: 'urgent' },
+				],
+			},
+			{
+				displayName: 'Start Date',
+				name: 'startDate',
+				type: 'dateTime',
+				default: '',
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'string',
+				default: 'to-do',
+				placeholder: 'e.g. to-do',
+				description: 'Slug of the column to place the task in',
 			},
 		],
 	},
