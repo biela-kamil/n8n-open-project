@@ -1,0 +1,91 @@
+import {
+	IExecuteFunctions,
+	INodeExecutionData,
+	INodeType,
+	INodeTypeDescription,
+	NodeConnectionTypes,
+	NodeOperationError,
+} from 'n8n-workflow';
+import { getProjects } from './methods/projects/get';
+import { operations } from './operations';
+import { projectsDescription } from './resources/projects';
+
+export class Kaneo implements INodeType {
+	description: INodeTypeDescription = {
+		displayName: 'Kaneo',
+		name: 'kaneo',
+		group: ['input'],
+		version: 1,
+		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+		description: 'Open Project Node',
+		icon: {
+			light: 'file:../../icons/kaneo.png',
+			dark: 'file:../../icons/kaneo.dark.png',
+		},
+		defaults: {
+			name: 'Kaneo',
+		},
+		credentials: [
+			{
+				name: 'kaneoApi',
+				required: true,
+			},
+		],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
+		properties: [
+			{
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
+				noDataExpression: true,
+				options: [
+					{ name: 'Priority', value: 'priority' },
+					{ name: 'Project', value: 'project' },
+					{ name: 'Task', value: 'task' },
+					{ name: 'Type', value: 'type' },
+					{ name: 'User', value: 'user' },
+				],
+				default: 'project',
+			},
+			...projectsDescription,
+		],
+		usableAsTool: true,
+	};
+
+	methods = {
+		listSearch: {
+			getProjects,
+		},
+	};
+
+	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+		const items = this.getInputData();
+		const resource = this.getNodeParameter('resource', 0);
+		const operation = this.getNodeParameter('operation', 0);
+
+		const handler = operations[`${resource}.${operation}`];
+		if (!handler) {
+			throw new NodeOperationError(
+				this.getNode(),
+				`Unsupported operation: ${resource} / ${operation}`,
+			);
+		}
+
+		const returnData: INodeExecutionData[] = [];
+
+		for (let i = 0; i < items.length; i++) {
+			try {
+				returnData.push(...(await handler.call(this, i)));
+			} catch (error) {
+				if (this.continueOnFail()) {
+					returnData.push({ json: { error: (error as Error).message }, pairedItem: i });
+					continue;
+				}
+				throw new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
+			}
+		}
+
+		return [returnData];
+	}
+}

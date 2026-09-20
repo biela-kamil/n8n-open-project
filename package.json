@@ -3,10 +3,11 @@
 	"version": "0.1.11",
 	"description": "n8n community node to interact with the OpenProject API",
 	"license": "MIT",
-	"homepage": "",
+	"homepage": "https://github.com/biela-kamil/n8n-open-project",
 	"keywords": [
 		"n8n-community-node-package",
-		"open-project"
+		"open-project",
+		"kaneo"
 	],
 	"author": {
 		"name": "Kamil Biela",
@@ -19,7 +20,7 @@
 	"scripts": {
 		"build": "n8n-node build",
 		"build:watch": "tsc --watch",
-		"dev": "n8n-node dev",
+		"dev": "fnm exec n8n-node dev",
 		"lint": "n8n-node lint",
 		"lint:fix": "n8n-node lint --fix",
 		"release": "n8n-node release",
@@ -36,19 +37,21 @@
 		"strict": true,
 		"credentials": [
 			"dist/credentials/OpenProjectApi.credentials.js",
-			"dist/credentials/WoodpeckerCredentialsApi.credentials.js"
+			"dist/credentials/WoodpeckerCredentialsApi.credentials.js",
+			"dist/credentials/KaneoApi.credentials.js"
 		],
 		"nodes": [
 			"dist/nodes/OpenProject/OpenProject.node.js",
-			"dist/nodes/Woodpecker/Woodpecker.node.js"
+			"dist/nodes/Woodpecker/Woodpecker.node.js",
+			"dist/nodes/Kaneo/Kaneo.node.js"
 		]
 	},
 	"devDependencies": {
-		"@n8n/node-cli": "^0.41.2",
+		"@n8n/node-cli": "^0.48.5",
 		"eslint": "^9.39.5",
-		"prettier": "^3.9.6",
-		"release-it": "^21.0.0",
-		"typescript": "^5.9.3"
+		"prettier": "^3.9.8",
+		"release-it": "^21.1.0",
+		"typescript": "^6.0.3"
 	},
 	"peerDependencies": {
 		"n8n-workflow": "*"
