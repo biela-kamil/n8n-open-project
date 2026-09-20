@@ -20,6 +20,12 @@ export const tasksDescription: INodeProperties[] = [
 				description: 'Create a task in a Kaneo project',
 			},
 			{
+				name: 'Delete',
+				value: 'delete',
+				action: 'Delete a task',
+				description: 'Permanently delete a task with its comments, labels and time entries',
+			},
+			{
 				name: 'Get',
 				value: 'get',
 				action: 'Get a task',
@@ -30,6 +36,12 @@ export const tasksDescription: INodeProperties[] = [
 				value: 'getAll',
 				action: 'Get many tasks',
 				description: 'Get many tasks from a Kaneo project',
+			},
+			{
+				name: 'Move',
+				value: 'move',
+				action: 'Move a task',
+				description: 'Move a task to another project in the same workspace',
 			},
 			{
 				name: 'Update',
@@ -48,7 +60,7 @@ export const tasksDescription: INodeProperties[] = [
 		placeholder: 'e.g. 4e3b1c2a-...',
 		description: 'ID of the task',
 		displayOptions: {
-			show: { ...showOnlyForTasks, operation: ['get', 'update'] },
+			show: { ...showOnlyForTasks, operation: ['get', 'update', 'delete', 'move'] },
 		},
 	},
 	{
@@ -57,9 +69,9 @@ export const tasksDescription: INodeProperties[] = [
 		type: 'resourceLocator',
 		default: { mode: 'list', value: '' },
 		required: true,
-		description: 'The project the task belongs to',
+		description: 'The project the task belongs to (for Move: the destination project)',
 		displayOptions: {
-			show: { ...showOnlyForTasks, operation: ['getAll', 'create'] },
+			show: { ...showOnlyForTasks, operation: ['getAll', 'create', 'move'] },
 		},
 		modes: [
 			{
@@ -80,6 +92,18 @@ export const tasksDescription: INodeProperties[] = [
 				placeholder: 'e.g. 4e3b1c2a-...',
 			},
 		],
+	},
+	{
+		displayName: 'Destination Status',
+		name: 'destinationStatus',
+		type: 'string',
+		default: '',
+		placeholder: 'e.g. to-do',
+		description:
+			'Slug of the column in the destination project. Defaults to the first column of the destination project.',
+		displayOptions: {
+			show: { ...showOnlyForTasks, operation: ['move'] },
+		},
 	},
 	{
 		displayName: 'Title',

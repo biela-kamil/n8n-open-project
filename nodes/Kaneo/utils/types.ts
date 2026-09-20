@@ -47,6 +47,13 @@ export interface KaneoTask {
 	externalLinks: unknown[];
 }
 
+/** Shape returned by `PUT /task/move/{id}` */
+export interface KaneoMoveTaskResponse {
+	task: KaneoTask;
+	sourceProjectId: string;
+	destinationProjectId: string;
+}
+
 /** Shape returned by `GET /task/tasks/{projectId}` */
 export interface KaneoTaskBoardResponse {
 	data: KaneoTaskBoard;
