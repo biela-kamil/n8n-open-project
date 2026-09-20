@@ -12,6 +12,7 @@ import { getLabels } from './resources/labels/getAll';
 import { updateLabel } from './resources/labels/update';
 import { getProject } from './resources/projects/get';
 import { getProjects } from './resources/projects/getAll';
+import { search } from './resources/search/search';
 import { getStatuses } from './resources/statuses/getAll';
 import { createTaskRelation } from './resources/taskRelations/create';
 import { deleteTaskRelation } from './resources/taskRelations/delete';
@@ -39,6 +40,7 @@ export const operations: Record<string, OperationFn> = {
 	'label.update': updateLabel,
 	'project.get': getProject,
 	'project.getAll': getProjects,
+	'search.search': search,
 	'status.getAll': getStatuses,
 	'taskRelation.create': createTaskRelation,
 	'taskRelation.delete': deleteTaskRelation,

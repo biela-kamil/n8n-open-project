@@ -11,6 +11,7 @@ import { operations } from './operations';
 import { commentsDescription } from './resources/comments';
 import { labelsDescription } from './resources/labels';
 import { projectsDescription } from './resources/projects';
+import { searchDescription } from './resources/search';
 import { statusesDescription } from './resources/statuses';
 import { taskRelationsDescription } from './resources/taskRelations';
 import { tasksDescription } from './resources/tasks';
@@ -49,6 +50,7 @@ export class Kaneo implements INodeType {
 					{ name: 'Label', value: 'label' },
 					{ name: 'Priority', value: 'priority' },
 					{ name: 'Project', value: 'project' },
+					{ name: 'Search', value: 'search' },
 					{ name: 'Status', value: 'status' },
 					{ name: 'Task', value: 'task' },
 					{ name: 'Task Relation', value: 'taskRelation' },
@@ -60,6 +62,7 @@ export class Kaneo implements INodeType {
 			...commentsDescription,
 			...labelsDescription,
 			...projectsDescription,
+			...searchDescription,
 			...statusesDescription,
 			...taskRelationsDescription,
 			...tasksDescription,

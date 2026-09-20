@@ -162,3 +162,31 @@ export interface KaneoTaskRelationWithTasks extends KaneoTaskRelation {
 	sourceTask: KaneoRelatedTask | null;
 	targetTask: KaneoRelatedTask | null;
 }
+
+/** Single hit from `GET /search`; optional fields depend on `type` */
+export interface KaneoSearchResult {
+	id: string;
+	type: 'task' | 'project' | 'workspace' | 'comment' | 'activity';
+	title: string;
+	description?: string;
+	content?: string;
+	projectId?: string;
+	projectName?: string;
+	projectSlug?: string;
+	workspaceId?: string;
+	workspaceName?: string;
+	userId?: string;
+	userName?: string;
+	createdAt: Date;
+	relevanceScore: number;
+	taskNumber?: number;
+	priority?: string;
+	status?: string;
+}
+
+/** Shape returned by `GET /search` */
+export interface KaneoSearchResponse {
+	results: KaneoSearchResult[];
+	totalCount: number;
+	searchQuery: string;
+}
