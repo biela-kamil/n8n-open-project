@@ -23,7 +23,7 @@ export class Kaneo implements INodeType {
 		group: ['input'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Open Project Node',
+		description: 'Kaneo Node',
 		icon: {
 			light: 'file:../../icons/kaneo.png',
 			dark: 'file:../../icons/kaneo.dark.png',
