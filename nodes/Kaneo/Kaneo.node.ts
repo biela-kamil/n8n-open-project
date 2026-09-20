@@ -12,6 +12,7 @@ import { commentsDescription } from './resources/comments';
 import { labelsDescription } from './resources/labels';
 import { projectsDescription } from './resources/projects';
 import { statusesDescription } from './resources/statuses';
+import { taskRelationsDescription } from './resources/taskRelations';
 import { tasksDescription } from './resources/tasks';
 
 export class Kaneo implements INodeType {
@@ -50,6 +51,7 @@ export class Kaneo implements INodeType {
 					{ name: 'Project', value: 'project' },
 					{ name: 'Status', value: 'status' },
 					{ name: 'Task', value: 'task' },
+					{ name: 'Task Relation', value: 'taskRelation' },
 					{ name: 'Type', value: 'type' },
 					{ name: 'User', value: 'user' },
 				],
@@ -59,6 +61,7 @@ export class Kaneo implements INodeType {
 			...labelsDescription,
 			...projectsDescription,
 			...statusesDescription,
+			...taskRelationsDescription,
 			...tasksDescription,
 		],
 		usableAsTool: true,

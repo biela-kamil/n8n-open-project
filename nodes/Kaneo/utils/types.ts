@@ -136,3 +136,29 @@ export interface KaneoActivity {
 	externalSource: string | null;
 	externalUrl: string | null;
 }
+
+/** Shape returned by `POST /task-relation` and `DELETE /task-relation/{id}` */
+export interface KaneoTaskRelation {
+	id: string;
+	sourceTaskId: string;
+	targetTaskId: string;
+	relationType: 'subtask' | 'blocks' | 'related';
+	createdAt: Date;
+}
+
+export interface KaneoRelatedTask {
+	id: string;
+	title: string;
+	status: string;
+	priority: string | null;
+	number: number | null;
+	projectId: string;
+	userId: string | null;
+	assigneeName: string | null;
+}
+
+/** Shape returned by `GET /task-relation/{taskId}` */
+export interface KaneoTaskRelationWithTasks extends KaneoTaskRelation {
+	sourceTask: KaneoRelatedTask | null;
+	targetTask: KaneoRelatedTask | null;
+}

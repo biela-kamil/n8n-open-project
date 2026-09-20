@@ -13,6 +13,9 @@ import { updateLabel } from './resources/labels/update';
 import { getProject } from './resources/projects/get';
 import { getProjects } from './resources/projects/getAll';
 import { getStatuses } from './resources/statuses/getAll';
+import { createTaskRelation } from './resources/taskRelations/create';
+import { deleteTaskRelation } from './resources/taskRelations/delete';
+import { getTaskRelations } from './resources/taskRelations/getAll';
 import { createTask } from './resources/tasks/create';
 import { deleteTask } from './resources/tasks/delete';
 import { getTask } from './resources/tasks/get';
@@ -37,6 +40,9 @@ export const operations: Record<string, OperationFn> = {
 	'project.get': getProject,
 	'project.getAll': getProjects,
 	'status.getAll': getStatuses,
+	'taskRelation.create': createTaskRelation,
+	'taskRelation.delete': deleteTaskRelation,
+	'taskRelation.getAll': getTaskRelations,
 	'task.create': createTask,
 	'task.delete': deleteTask,
 	'task.get': getTask,
