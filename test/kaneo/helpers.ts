@@ -1,12 +1,12 @@
 import { vi } from 'vitest';
-import type { IExecuteFunctions } from 'n8n-workflow';
+import type { IDataObject, IExecuteFunctions, IHttpRequestOptions } from 'n8n-workflow';
 import { validateRequest } from './openapiValidator';
 
 export interface RecordedRequest {
 	method: string;
 	url: string;
-	qs: Record<string, any>;
-	body: Record<string, any> | undefined;
+	qs: IDataObject;
+	body: IDataObject | undefined;
 }
 
 export const CREDENTIALS = {
@@ -28,12 +28,12 @@ export function createContext(
 ) {
 	const requests: RecordedRequest[] = [];
 
-	const httpRequestWithAuthentication = vi.fn(async (_credential: string, options: any) => {
+	const httpRequestWithAuthentication = vi.fn(async (_credential: string, options: IHttpRequestOptions) => {
 		const request: RecordedRequest = {
 			method: options.method,
 			url: options.url,
-			qs: options.qs ?? {},
-			body: options.body,
+			qs: (options.qs as IDataObject) ?? {},
+			body: options.body as IDataObject | undefined,
 		};
 		const errors = validateRequest(request.method, request.url, request.qs, request.body);
 		if (errors.length) throw new Error(`400 Bad Request: ${errors.join('; ')}`);

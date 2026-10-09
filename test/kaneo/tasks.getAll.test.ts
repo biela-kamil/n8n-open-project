@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { IExecuteFunctions } from 'n8n-workflow';
+import type { IExecuteFunctions, IHttpRequestOptions } from 'n8n-workflow';
 import { getTasks } from '../../nodes/Kaneo/resources/tasks/getAll';
 import { validateRequest } from './openapiValidator';
 
@@ -15,10 +15,10 @@ function board(ids: string[], extra: { archived?: string[]; planned?: string[] }
 
 function setup(
 	params: Record<string, unknown>,
-	pages: Array<{ ids: string[] } & Record<string, any>>,
+	pages: Array<{ ids: string[] } & Record<string, unknown>>,
 ) {
 	const calls: Array<Record<string, unknown>> = [];
-	const httpRequestWithAuthentication = vi.fn(async (_cred: string, options: any) => {
+	const httpRequestWithAuthentication = vi.fn(async (_cred: string, options: IHttpRequestOptions) => {
 		// Behave like the real API: reject requests that violate the OpenAPI spec with 400
 		const errors = validateRequest(options.method, options.url, options.qs);
 		if (errors.length) throw new Error(`400 Bad Request: ${errors.join('; ')}`);
@@ -48,7 +48,7 @@ const ids = (from: number, to: number) =>
 
 describe('Kaneo tasks getAll', () => {
 	it('returns all tasks across pages without violating the API spec', async () => {
-		const { ctx, calls } = setup({ projectId: 'p1', returnAll: true }, [
+		const { ctx } = setup({ projectId: 'p1', returnAll: true }, [
 			{ ids: ids(1, 100) },
 			{ ids: ids(101, 150) },
 		]);

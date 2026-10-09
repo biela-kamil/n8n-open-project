@@ -5,7 +5,7 @@ import { createContext } from './helpers';
 const run = (
 	operation: string,
 	params: Record<string, unknown>,
-	responses: Record<string, any>,
+	responses: Record<string, unknown>,
 ) => {
 	const { ctx, requests } = createContext(params, responses);
 	return operations[operation].call(ctx, 0).then((items) => ({ items, requests }));
