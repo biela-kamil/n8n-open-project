@@ -24,7 +24,8 @@
 		"lint": "n8n-node lint",
 		"lint:fix": "n8n-node lint --fix",
 		"release": "n8n-node release",
-		"prepublishOnly": "n8n-node prerelease"
+		"prepublishOnly": "n8n-node prerelease",
+		"test": "vitest run"
 	},
 	"files": [
 		"dist"
@@ -47,11 +48,12 @@
 		]
 	},
 	"devDependencies": {
-		"@n8n/node-cli": "^0.48.5",
+		"@n8n/node-cli": "^0.51.4",
 		"eslint": "^9.39.5",
-		"prettier": "^3.9.8",
-		"release-it": "^21.1.0",
-		"typescript": "^6.0.3"
+		"prettier": "^3.9.9",
+		"release-it": "^21.1.1",
+		"typescript": "^6.0.3",
+		"vitest": "^5.0.3"
 	},
 	"peerDependencies": {
 		"n8n-workflow": "*"

@@ -1,0 +1,1616 @@
+{
+	"source": "https://github.com/usekaneo/kaneo/blob/main/apps/docs/openapi.json",
+	"paths": {
+		"/project/{id}/move": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"workspaceId": {
+							"type": "string",
+							"minLength": 1
+						}
+					},
+					"required": ["workspaceId"]
+				}
+			}
+		},
+		"/project": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "workspaceId",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"description": "Pass \"true\" to include archived projects in the list."
+						},
+						"required": false,
+						"description": "Pass \"true\" to include archived projects in the list.",
+						"name": "includeArchived",
+						"in": "query"
+					}
+				]
+			},
+			"post": {
+				"parameters": [],
+				"body": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"workspaceId": {
+							"type": "string"
+						},
+						"icon": {
+							"type": "string"
+						},
+						"slug": {
+							"type": "string"
+						}
+					},
+					"required": ["name", "workspaceId", "icon", "slug"]
+				}
+			}
+		},
+		"/project/{id}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			},
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"icon": {
+							"type": "string"
+						},
+						"slug": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"isPublic": {
+							"type": "boolean"
+						}
+					},
+					"required": ["name", "icon", "slug", "description", "isPublic"]
+				}
+			},
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/project/{id}/background": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			},
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/project/reorder": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "workspaceId",
+						"in": "query"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"projects": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"position": {
+										"type": "integer",
+										"minimum": 0
+									}
+								},
+								"required": ["id", "position"]
+							},
+							"minItems": 1
+						}
+					},
+					"required": ["projects"]
+				}
+			}
+		},
+		"/project/{id}/archive": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/project/{id}/unarchive": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/project/{id}/background-upload": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"contentType": {
+							"type": "string"
+						},
+						"size": {
+							"type": "number"
+						}
+					},
+					"required": ["contentType", "size"]
+				}
+			}
+		},
+		"/project/{id}/background-upload/finalize": {
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"key": {
+							"type": "string"
+						},
+						"contentType": {
+							"type": "string"
+						},
+						"version": {
+							"type": "string"
+						},
+						"size": {
+							"type": "number"
+						}
+					},
+					"required": ["key", "contentType", "version", "size"]
+				}
+			}
+		},
+		"/task/{id}/description": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					},
+					{
+						"schema": {
+							"type": "integer",
+							"minimum": 0,
+							"maximum": 2000000000,
+							"default": 0
+						},
+						"required": false,
+						"name": "offset",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"pattern": "^[0-9]{1,10}$"
+						},
+						"required": false,
+						"name": "version",
+						"in": "query"
+					}
+				]
+			}
+		},
+		"/task/description-matches/{projectId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 256
+						},
+						"required": true,
+						"name": "query",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 128
+						},
+						"required": false,
+						"name": "after",
+						"in": "query"
+					}
+				]
+			}
+		},
+		"/task/assigned": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1
+						},
+						"required": true,
+						"name": "workspaceId",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"enum": ["true", "false"],
+							"description": "Return only the total, with an empty tasks array, without loading task rows or labels."
+						},
+						"required": false,
+						"description": "Return only the total, with an empty tasks array, without loading task rows or labels.",
+						"name": "countOnly",
+						"in": "query"
+					}
+				]
+			}
+		},
+		"/task/tasks/{projectId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					},
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": false,
+						"name": "status",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": false,
+						"name": "priority",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": false,
+						"name": "assigneeId",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 1000000
+						},
+						"required": false,
+						"name": "page",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 1000000
+						},
+						"required": false,
+						"name": "relatedPage",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 100
+						},
+						"required": false,
+						"name": "limit",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"enum": ["createdAt", "priority", "dueDate", "position", "title", "number"]
+						},
+						"required": false,
+						"name": "sortBy",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"enum": ["asc", "desc"]
+						},
+						"required": false,
+						"name": "sortOrder",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": false,
+						"name": "dueBefore",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": false,
+						"name": "dueAfter",
+						"in": "query"
+					}
+				]
+			}
+		},
+		"/task/bulk": {
+			"patch": {
+				"parameters": [],
+				"body": {
+					"type": "object",
+					"properties": {
+						"taskIds": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"minItems": 1
+						},
+						"operation": {
+							"type": "string",
+							"enum": [
+								"updateStatus",
+								"updatePriority",
+								"updateAssignee",
+								"delete",
+								"addLabel",
+								"removeLabel",
+								"updateDueDate"
+							]
+						},
+						"value": {
+							"type": ["string", "null"],
+							"description": "The new value for the chosen operation. Unused by `delete`; null clears an assignee or due date."
+						}
+					},
+					"required": ["taskIds", "operation"]
+				}
+			}
+		},
+		"/task/draft-upload/{projectId}": {
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"filename": {
+							"type": "string"
+						},
+						"contentType": {
+							"type": "string"
+						},
+						"size": {
+							"type": "number"
+						},
+						"surface": {
+							"type": "string",
+							"enum": ["description"]
+						}
+					},
+					"required": ["filename", "contentType", "size", "surface"]
+				}
+			}
+		},
+		"/task/draft-upload/{projectId}/finalize": {
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"key": {
+							"type": "string",
+							"description": "The key returned when the URL was issued."
+						},
+						"filename": {
+							"type": "string"
+						},
+						"contentType": {
+							"type": "string"
+						},
+						"size": {
+							"type": "number"
+						},
+						"surface": {
+							"type": "string",
+							"enum": ["description"]
+						}
+					},
+					"required": ["key", "filename", "contentType", "size", "surface"]
+				}
+			}
+		},
+		"/task/reorder": {
+			"post": {
+				"parameters": [],
+				"body": {
+					"type": "object",
+					"properties": {
+						"projectId": {
+							"type": "string"
+						},
+						"expectedTasks": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"position": {
+										"type": ["integer", "null"],
+										"minimum": 0,
+										"maximum": 2147483646
+									},
+									"status": {
+										"type": "string"
+									}
+								},
+								"required": ["id", "position", "status"]
+							},
+							"description": "Previous complete contents of the affected columns; stale snapshots return 409"
+						},
+						"tasks": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"position": {
+										"type": "integer",
+										"minimum": 0,
+										"maximum": 2147483646
+									},
+									"status": {
+										"type": "string"
+									}
+								},
+								"required": ["id", "position"]
+							},
+							"minItems": 1
+						}
+					},
+					"required": ["projectId", "tasks"]
+				}
+			}
+		},
+		"/task/{projectId}": {
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"startDate": {
+							"type": "string"
+						},
+						"dueDate": {
+							"type": "string"
+						},
+						"priority": {
+							"type": "string",
+							"enum": ["no-priority", "low", "medium", "high", "urgent"]
+						},
+						"status": {
+							"type": "string",
+							"description": "The target column's slug."
+						},
+						"userId": {
+							"type": "string",
+							"description": "Assignee, if any."
+						},
+						"draftAssetIds": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"maxItems": 100
+						},
+						"customFields": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"fieldId": {
+										"type": "string"
+									},
+									"value": {
+										"type": "string"
+									}
+								},
+								"required": ["fieldId", "value"]
+							}
+						}
+					},
+					"required": ["title", "description", "priority", "status"]
+				}
+			}
+		},
+		"/task/duplicate/{id}": {
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"title": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"/task/by-ticket-id/{ticketId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string",
+							"maxLength": 128,
+							"description": "Project key and task number, e.g. KAN-12."
+						},
+						"required": true,
+						"description": "Project key and task number, e.g. KAN-12.",
+						"name": "ticketId",
+						"in": "path"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"description": "Select a workspace if the ticket ID exists in more than one."
+						},
+						"required": false,
+						"description": "Select a workspace if the ticket ID exists in more than one.",
+						"name": "workspaceId",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 128,
+							"description": "Select a workspace by its slug instead of its ID."
+						},
+						"required": false,
+						"description": "Select a workspace by its slug instead of its ID.",
+						"name": "workspaceSlug",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"description": "Select a project if the ticket ID exists more than once."
+						},
+						"required": false,
+						"description": "Select a project if the ticket ID exists more than once.",
+						"name": "projectId",
+						"in": "query"
+					}
+				]
+			}
+		},
+		"/task/{id}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"enum": ["detail", "board"]
+						},
+						"required": false,
+						"name": "view",
+						"in": "query"
+					}
+				]
+			},
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string",
+							"description": "Omit to preserve the existing description when updating a list summary."
+						},
+						"startDate": {
+							"type": "string"
+						},
+						"dueDate": {
+							"type": "string"
+						},
+						"priority": {
+							"type": "string",
+							"enum": ["no-priority", "low", "medium", "high", "urgent"]
+						},
+						"status": {
+							"type": "string"
+						},
+						"projectId": {
+							"type": "string"
+						},
+						"position": {
+							"type": "integer",
+							"minimum": 0,
+							"maximum": 2147483646
+						},
+						"userId": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "priority", "status", "projectId", "position"]
+				}
+			},
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/task/move/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"destinationProjectId": {
+							"type": "string"
+						},
+						"destinationStatus": {
+							"type": "string",
+							"description": "Defaults to the destination project's first column."
+						}
+					},
+					"required": ["destinationProjectId"]
+				}
+			}
+		},
+		"/task/export/{projectId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/task/import/{projectId}": {
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"tasks": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"status": {
+										"type": "string"
+									},
+									"priority": {
+										"type": "string"
+									},
+									"startDate": {
+										"type": ["string", "null"]
+									},
+									"dueDate": {
+										"type": ["string", "null"]
+									},
+									"userId": {
+										"type": ["string", "null"]
+									}
+								},
+								"required": ["title", "status"]
+							}
+						}
+					},
+					"required": ["tasks"]
+				}
+			}
+		},
+		"/task/status/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"status": {
+							"type": "string"
+						}
+					},
+					"required": ["status"]
+				}
+			}
+		},
+		"/task/priority/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"priority": {
+							"type": "string",
+							"enum": ["no-priority", "low", "medium", "high", "urgent"]
+						}
+					},
+					"required": ["priority"]
+				}
+			}
+		},
+		"/task/assignee/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"userId": {
+							"type": ["string", "null"],
+							"description": "Null unassigns."
+						}
+					},
+					"required": ["userId"]
+				}
+			}
+		},
+		"/task/due-date/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"dueDate": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"/task/title/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"title": {
+							"type": "string"
+						}
+					},
+					"required": ["title"]
+				}
+			}
+		},
+		"/task/image-upload/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"filename": {
+							"type": "string"
+						},
+						"contentType": {
+							"type": "string"
+						},
+						"size": {
+							"type": "number"
+						},
+						"surface": {
+							"type": "string",
+							"enum": ["description", "comment"],
+							"description": "Where the image is used, which decides how it is scoped."
+						}
+					},
+					"required": ["filename", "contentType", "size", "surface"]
+				}
+			}
+		},
+		"/task/image-upload/{id}/finalize": {
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"key": {
+							"type": "string",
+							"description": "The key returned when the URL was issued."
+						},
+						"filename": {
+							"type": "string"
+						},
+						"contentType": {
+							"type": "string"
+						},
+						"size": {
+							"type": "number"
+						},
+						"surface": {
+							"type": "string",
+							"enum": ["description", "comment"],
+							"description": "Where the image is used, which decides how it is scoped."
+						}
+					},
+					"required": ["key", "filename", "contentType", "size", "surface"]
+				}
+			}
+		},
+		"/task/description/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"description": {
+							"type": "string"
+						}
+					},
+					"required": ["description"]
+				}
+			}
+		},
+		"/column/{projectId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				]
+			},
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"icon": {
+							"type": "string"
+						},
+						"color": {
+							"type": "string"
+						},
+						"isFinal": {
+							"type": "boolean"
+						}
+					},
+					"required": ["name"]
+				}
+			}
+		},
+		"/column/reorder/{projectId}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "projectId",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"columns": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string"
+									},
+									"position": {
+										"type": "number"
+									}
+								},
+								"required": ["id", "position"]
+							},
+							"description": "Every column keeps its new position. Columns from another project are rejected."
+						}
+					},
+					"required": ["columns"]
+				}
+			}
+		},
+		"/column/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"icon": {
+							"type": ["string", "null"]
+						},
+						"color": {
+							"type": ["string", "null"]
+						},
+						"isFinal": {
+							"type": "boolean"
+						}
+					}
+				}
+			},
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/comment/{taskId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "taskId",
+						"in": "path"
+					}
+				]
+			},
+			"post": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "taskId",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"content": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 10000
+						},
+						"externalUserName": {
+							"type": "string",
+							"maxLength": 120,
+							"description": "Attribution for an imported comment. Requires workspace:manage_settings and externalSource; otherwise ignored."
+						},
+						"externalSource": {
+							"type": "string",
+							"enum": ["planka", "trello", "jira"],
+							"description": "The tool the comment was imported from. Supplying external attribution requires workspace:manage_settings."
+						}
+					},
+					"required": ["content"]
+				}
+			}
+		},
+		"/comment/{id}": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"content": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 10000
+						}
+					},
+					"required": ["content"]
+				}
+			},
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/label/task/{taskId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "taskId",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/label/workspace/{workspaceId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "workspaceId",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/label": {
+			"post": {
+				"parameters": [],
+				"body": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"color": {
+							"type": "string"
+						},
+						"workspaceId": {
+							"type": "string"
+						},
+						"taskId": {
+							"type": "string"
+						}
+					},
+					"required": ["name", "color", "workspaceId"]
+				}
+			}
+		},
+		"/label/{id}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			},
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"color": {
+							"type": "string"
+						}
+					},
+					"required": ["name", "color"]
+				}
+			},
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/label/{id}/task": {
+			"put": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"body": {
+					"type": "object",
+					"properties": {
+						"taskId": {
+							"type": "string"
+						}
+					},
+					"required": ["taskId"]
+				}
+			},
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/search": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1,
+							"maxLength": 512
+						},
+						"required": true,
+						"name": "q",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"enum": ["all", "tasks", "projects", "workspaces", "comments", "activities"],
+							"default": "all"
+						},
+						"required": false,
+						"name": "type",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"minLength": 1
+						},
+						"required": true,
+						"name": "workspaceId",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": false,
+						"name": "projectId",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"default": "20"
+						},
+						"required": false,
+						"name": "limit",
+						"in": "query"
+					},
+					{
+						"schema": {
+							"type": "string",
+							"format": "email"
+						},
+						"required": false,
+						"name": "userEmail",
+						"in": "query"
+					}
+				]
+			}
+		},
+		"/task-relation/{taskId}": {
+			"get": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "taskId",
+						"in": "path"
+					}
+				]
+			}
+		},
+		"/task-relation": {
+			"post": {
+				"parameters": [],
+				"body": {
+					"type": "object",
+					"properties": {
+						"sourceTaskId": {
+							"type": "string"
+						},
+						"targetTaskId": {
+							"type": "string"
+						},
+						"relationType": {
+							"type": "string",
+							"enum": ["subtask", "blocks", "related"]
+						}
+					},
+					"required": ["sourceTaskId", "targetTaskId", "relationType"]
+				}
+			}
+		},
+		"/task-relation/{id}": {
+			"delete": {
+				"parameters": [
+					{
+						"schema": {
+							"type": "string"
+						},
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				]
+			}
+		}
+	}
+}
