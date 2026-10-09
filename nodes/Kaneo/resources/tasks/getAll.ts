@@ -3,7 +3,7 @@ import { kaneoRequest } from '../../utils/request';
 import { KaneoTask, KaneoTaskBoard, KaneoTaskBoardResponse } from '../../utils/types';
 
 /** Maximum page size accepted by the Kaneo API */
-const MAX_PAGE_SIZE = 200;
+const MAX_PAGE_SIZE = 100;
 
 type TaskBucket = 'board' | 'archived' | 'planned';
 
