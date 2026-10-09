@@ -93,6 +93,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run tests
+        run: npm test
+
       - name: Set version from tag
         # The tag name is the version. Write it into package.json without
         # creating another git tag. --allow-same-version keeps re-runs idempotent.
